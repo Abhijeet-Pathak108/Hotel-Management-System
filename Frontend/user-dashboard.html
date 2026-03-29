@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="user.css">
+</head>
+<body>
+
+    <header>
+    <div>
+        <strong>Tenant Dashboard</strong>
+        <span class="role-badge">TENANT</span>
+    </div>
+    <button class="btn" onclick="logout()">Logout</button>
+</header>
+
+<div class="container">
+
+    <div class="welcome">
+        <h2>Welcome, Abhi</h2>
+        <p>Your personalized tenant dashboard is here.</p>
+    </div>
+
+    <!-- SUMMARY CARDS -->
+    <div class="grid">
+        <div class="card">
+            <h3>Rent Summary</h3>
+            <p id="roomRentLabel">Monthly Rent: <strong id="roomRent">₹500</strong></p>
+            <p>Status: <span class="status-due">Due</span></p>
+            <p>Due Date: <strong>10 Feb 2026</strong></p>
+            <button class="btn btn-primary" onclick="goToPayment()">Pay Rent</button>
+        </div>
+
+        <div class="card">
+            <h3>Room Information</h3>
+            <p>Room: <strong>A-203</strong></p>
+            <p>Floor: <strong>2nd</strong></p>
+            <p>Type: <strong>Double Sharing</strong></p>
+            <p>Check-in: <strong>Jan 2026</strong></p>
+        </div>
+
+        <div class="card">
+            <h3>Actions</h3>
+            <button class="btn" style="width:100%">View Bills</button>
+            <button class="btn-alt" style="width:100%;margin-top:8px;">Raise Complaint</button>
+        </div>
+    </div>
+
+    <br><br>
+
+    <!-- BILLING TABLE -->
+    <div class="card">
+        <h3>Billing History</h3>
+        <table>
+            <tr>
+                <th>Month</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Receipt</th>
+            </tr>
+            <tr>
+                <td>Jan 2026</td>
+                <td>₹500</td>
+                <td><span class="status-paid">Paid</span></td>
+                <td><button class="btn" style="padding:6px 10px;font-size:12px;">Download</button></td>
+            </tr>
+            <tr>
+                <td>Feb 2026</td>
+                <td>₹500</td>
+                <td><span class="status-due">Due</span></td>
+                <td><button class="btn" style="padding:6px 10px;font-size:12px;" onclick="goToPayment()">Pay</button></td>
+            </tr>
+        </table>
+    </div>
+
+    <br><br>
+
+    <!-- COMPLAINT SECTION -->
+    <div class="card">
+        <h3>Complaints</h3>
+        <p>#1123 - Fan not working → <strong>In Progress</strong></p>
+        <p>#1130 - Water leakage → <strong>Resolved</strong></p>
+        <button class="btn-alt" style="margin-top:10px;">Raise New Complaint</button>
+    </div>
+
+    <br><br>
+
+    <!-- ANNOUNCEMENT SECTION -->
+    <div class="card">
+        <h3>Announcements</h3>
+        <div class="announcement-item">Water maintenance scheduled for Wed 7pm</div>
+        <div class="announcement-item">Rent Due by 10 Feb</div>
+        <div class="announcement-item">Room inspection this weekend</div>
+    </div>
+
+</div>
+
+<footer>
+    © 2026 Hostel / Property Management System
+</footer>
+
+<!-- <header>
+    <h2>User Dashboard</h2>
+    <button class="btn btn-danger" onclick="logout()">Logout</button>
+</header>
+
+<div class="container">
+    <div class="card">
+        
+        
+        <span class="role-badge">TENANT</span>
+
+        <h3>Welcome to your dashboard!</h3>
+
+       
+        <p class="desc">
+            You are registered as a tenant in this hostel/property system.  
+            You can manage your payments, complaints and view room details.
+        </p>
+
+        <
+        <ul>
+            <li>Pay rent online</li>
+            <li>Submit complaints</li>
+            <li>View assigned room</li>
+            <li>Download bills & receipts</li>
+        </ul>
+
+        
+        <button class="btn btn-primary" onclick="goToPayment()">Go to Payment</button>
+
+        
+        <button id="adminSwitchBtn" class="btn btn-secondary">
+            Switch to Admin Dashboard
+        </button> 
+
+        
+        <div class="stat">Self Service Role</div>
+    </div>
+</div>
+
+<footer>© 2026 Hostel / Property Management System</footer> -->
+
+</body>
+</html>
+
+
+<script src="auth.js"></script>
+
+<script src="user.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,69 @@
+<button id="payBtn">Pay Now</button>
+<br>
+<button onclick="logout()">Logout</button>
+<button onclick="goBack()">Back to Dashboard</button>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="auth.js"></script>
+<script>
+
+fetchWithAuth("/auth/home")
+    .catch(() => {
+        console.log("session expired");
+        window.location.href = "login.html";
+    });
+
+function goBack() {
+    window.location.href = "dashboard.html";
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+document.getElementById("payBtn").onclick = async function () {
+
+  // 1. Call backend to create order
+  const res = await fetchWithAuth("/auth/create-order", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ amount: 1 })  // ₹100
+  });
+
+  const order = await res.json();
+
+  // 2. Initialize Razorpay Checkout
+  const options = {
+    key: "rzp_test_S41OxbRp67UfaE",
+    amount: order.amount,
+    currency: "INR",
+    name: "My Project",
+    description: "Test Transaction",
+    order_id: order.id,
+    handler: async function (response){
+    	
+    	const verifyRes = await fetchWithAuth("/auth/verify", {
+    	      method: "POST",
+    	      headers: {
+    	         "Content-Type": "application/json"
+    	      },
+    	      body: JSON.stringify({
+    	         payment_id: response.razorpay_payment_id,
+    	         order_id: response.razorpay_order_id,
+    	         signature: response.razorpay_signature
+    	      })
+    	   });
+    	
+       alert("Payment Successful");
+       console.log(response);
+       // send to backend for verification
+    },
+    theme: {
+      color: "#3399cc"
+    }
+  };
+
+  const rzp = new Razorpay(options);
+  rzp.open();
+};
+});
+</script>

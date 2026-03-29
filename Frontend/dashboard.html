@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head><title>Dashboard</title></head>
+<body>
+
+<h2>Dashboard</h2>
+
+<button onclick="goToPayment()">Payment Page</button>
+<button onclick="logout()">Logout</button>
+
+<p id="result"></p>
+
+<script src="auth.js"></script>
+
+<script>
+// check token on dashboard load
+fetchWithAuth("/auth/home")
+    .then(res => res.text())
+    .catch(() => {
+        console.log("session expired");
+        window.location.href = "login.html";
+    });
+
+function goToPayment() {
+    // ensure session valid before navigation
+    fetchWithAuth("/auth/home")
+        .then(() => window.location.href = "PaymentPage.html")
+        .catch(() => {
+            console.log("session expired");
+            window.location.href = "login.html";
+        });
+}
+</script>
+
+
+</body>
+</html>

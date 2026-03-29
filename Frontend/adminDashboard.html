@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<header>
+ 
+    <h2>Admin Dashboard</h2>
+
+    <div class="action-area">
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-btn" onclick="openRegister()">Register User ▾</button>
+        </div>
+
+        <button class="btn btn-danger" onclick="logout()">Logout</button>
+    </div>
+</header>
+
+    <!-- === REGISTER MODAL === -->
+    <div class="modal-overlay" id="registerModal">
+        <div class="modal-box">
+            <div class="close-btn" onclick="closeRegister()">×</div>
+            <h2>Register</h2>
+
+            <form id="registerForm">
+                <input id="reg_username" placeholder="Username" required>
+                <input id="reg_password" type="password" placeholder="Password" required>
+                <select id="reg_role" required>
+                    <option value="" disabled selected>Select Role</option>
+                    <option value="ROLE_USER">Tenant</option>
+                    <!-- <option value="ROLE_STAFF">Staff</option> -->
+                    <option value="ROLE_MANAGER">Manager</option>
+                    <option value="ROLE_ADMIN">Admin</option>
+                </select>
+
+
+                <button type="submit">Register</button>
+
+                <!-- <span class="link" onclick="switchToLogin()">Already registered? Login</span> -->
+
+                <div class="spinner" id="registerLoader" style="display:none;"></div>
+                <p id="regMsg"></p>
+            </form>
+        </div>
+    </div>
+
+
+
+
+
+<div id="modalOverlay" class="modal-overlay">
+  <div class="modal-box" id="modalBox">
+    
+    <div class="modal-header">
+      <span id="modalTitle"></span>
+      <span class="close-btn" onclick="closeModal()">×</span>
+    </div>
+
+    <div id="modalContent"></div>
+
+  </div>
+</div>
+
+<div id="pageContent">
+<button class="btn btn-secondary dropdown-btn" onclick="openModal('MANAGERS')">View Managers</button>
+<button class="btn btn-secondary dropdown-btn" onclick="openModal('TENANTS')">View Tenants</button>
+<button class="btn btn-secondary dropdown-btn" onclick="openModal('ADD_ROOM')">Add Rooms</button>
+<button class="btn btn-secondary dropdown-btn" onclick="openModal('VIEW_ROOMS')">View Rooms</button>
+
+
+
+<div class="container">
+    <div class="card">
+
+        <!-- NEW ROLE BADGE -->
+        <span class="role-badge">ADMIN</span>
+
+        <h3>Welcome, Administrator</h3>
+
+        <!-- NEW ROLE DESCRIPTION -->
+        <p class="desc">
+            You are responsible for managing operational data, tenants, rooms, billing and system reporting.
+            You have the highest level of active control within this hostel management system.
+        </p>
+
+        <!-- NEW CAPABILITY SECTION -->
+        <ul>
+            <li>Manage tenants</li>
+            <li>Manage rooms & assignments</li>
+            <li>Manage payments & billing</li>
+            <li>Handle complaints</li>
+            <li>View analytics & reports</li>
+        </ul>
+
+        <!-- YOUR ORIGINAL BUTTONS (UNTOUCHED) -->
+        <button class="btn btn-primary" onclick="manageUsers()">Manage Users</button>
+        <button class="btn btn-primary" onclick="viewReports()">View Reports</button>
+        <!-- <button class="btn btn-primary" onclick="goToPayment()">Go to Payment</button> -->
+
+        <br><br>
+
+        <!-- <button class="btn btn-secondary" onclick="switchToUser()">Switch to User View</button> -->
+
+        <!-- NEW STATUS TAG -->
+        <div class="stat">Full Access Role</div>
+
+    </div>
+</div>
+</div>
+
+<footer>© 2026 Hostel / Property Management System</footer>
+
+
+
+<script src="auth.js"></script>
+<script src="admin.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+package com.example.demo.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.dto.AuthRequest;
+import com.example.demo.entity.User;
+import com.example.demo.repository.UserRepository;
+
+@Service
+public class UserServiceImpl implements UserService {
+	
+	@Autowired
+	private UserRepository userRepo;
+	
+	@Autowired 
+	private BCryptPasswordEncoder passwordEncoder;
+
+	@Override
+	public User findByUsername(String username) {
+		// TODO Auto-generated method stub
+		return userRepo.findByUsername(username);
+	}
+
+	@Override
+	public void save(AuthRequest request) {
+		// TODO Auto-generated method stub
+		
+		if(userRepo.existsByUsername(request.getUsername())) {
+			throw new RuntimeException("User already exists..");
+		}
+		
+		User user = new User();
+		user.setUsername(request.getUsername());
+		user.setPassword(passwordEncoder.encode(request.getPassword()));
+		userRepo.save(user);
+		
+	}
+
+}
