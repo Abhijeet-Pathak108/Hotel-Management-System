@@ -1,0 +1,591 @@
+<!-- ======= USER DASHBOARD LAYOUT ======= -->
+<div class="dashboard-root">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar" [class.collapsed]="sidebarCollapsed">
+
+    <!-- Logo -->
+    <div class="sidebar-logo">
+      <div class="logo-emblem">
+        <svg width="32" height="32" viewBox="0 0 42 42" fill="none">
+          <circle cx="21" cy="21" r="20" stroke="#C9A84C" stroke-width="1.5"/>
+          <path d="M21 3 L28 14 L21 11 L14 14 Z" fill="#C9A84C"/>
+          <path d="M39 21 L28 28 L31 21 L28 14 Z" fill="#C9A84C"/>
+          <path d="M21 39 L14 28 L21 31 L28 28 Z" fill="#C9A84C"/>
+          <path d="M3 21 L14 14 L11 21 L14 28 Z" fill="#C9A84C"/>
+          <circle cx="21" cy="21" r="2" fill="#C9A84C"/>
+        </svg>
+      </div>
+      <div class="logo-text" *ngIf="!sidebarCollapsed">
+        <span class="logo-name">Grand Horizon</span>
+        <span class="logo-sub">Guest Portal</span>
+      </div>
+      <button class="collapse-btn" (click)="toggleSidebar()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline *ngIf="!sidebarCollapsed" points="15 18 9 12 15 6"/>
+          <polyline *ngIf="sidebarCollapsed" points="9 18 15 12 9 6"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- User Profile Card -->
+    <div class="sidebar-profile" *ngIf="!sidebarCollapsed">
+      <div class="profile-avatar">
+        <span>{{ getUserInitials() }}</span>
+        <div class="avatar-status"></div>
+      </div>
+      <div class="profile-info">
+        <span class="profile-name">{{ userName }}</span>
+        <span class="profile-tier">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="#C9A84C"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          Gold Member
+        </span>
+      </div>
+    </div>
+
+    <div class="profile-avatar-mini" *ngIf="sidebarCollapsed" [title]="userName">
+      <span>{{ getUserInitials() }}</span>
+      <div class="avatar-status"></div>
+    </div>
+
+    <!-- Divider -->
+    <div class="sidebar-divider"></div>
+
+    <!-- Navigation -->
+    <nav class="sidebar-nav">
+      <p class="nav-section-label" *ngIf="!sidebarCollapsed">Main Menu</p>
+
+      <button class="nav-item" [class.active]="activeSection === 'dashboard'" (click)="setSection('dashboard')" [title]="sidebarCollapsed ? 'Dashboard' : ''">
+        <div class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+          </svg>
+        </div>
+        <span class="nav-label" *ngIf="!sidebarCollapsed">Dashboard</span>
+        <div class="nav-active-bar" *ngIf="activeSection === 'dashboard'"></div>
+      </button>
+
+      <button class="nav-item" [class.active]="activeSection === 'bookings'" (click)="setSection('bookings')" [title]="sidebarCollapsed ? 'My Bookings' : ''">
+        <div class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+        </div>
+        <span class="nav-label" *ngIf="!sidebarCollapsed">My Bookings</span>
+        <span class="nav-badge" *ngIf="!sidebarCollapsed">2</span>
+        <div class="nav-active-bar" *ngIf="activeSection === 'bookings'"></div>
+      </button>
+
+      <button class="nav-item" [class.active]="activeSection === 'rooms'" (click)="setSection('rooms')" [title]="sidebarCollapsed ? 'Browse Rooms' : ''">
+        <div class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+        </div>
+        <span class="nav-label" *ngIf="!sidebarCollapsed">Browse Rooms</span>
+        <div class="nav-active-bar" *ngIf="activeSection === 'rooms'"></div>
+      </button>
+
+      <button class="nav-item" [class.active]="activeSection === 'services'" (click)="setSection('services')" [title]="sidebarCollapsed ? 'Hotel Services' : ''">
+        <div class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 19.07l-1.41-1.41"/>
+          </svg>
+        </div>
+        <span class="nav-label" *ngIf="!sidebarCollapsed">Hotel Services</span>
+        <div class="nav-active-bar" *ngIf="activeSection === 'services'"></div>
+      </button>
+
+      <button class="nav-item" [class.active]="activeSection === 'history'" (click)="setSection('history')" [title]="sidebarCollapsed ? 'Stay History' : ''">
+        <div class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+          </svg>
+        </div>
+        <span class="nav-label" *ngIf="!sidebarCollapsed">Stay History</span>
+        <div class="nav-active-bar" *ngIf="activeSection === 'history'"></div>
+      </button>
+
+      <div class="sidebar-divider" style="margin: 0.8rem 0;"></div>
+      <p class="nav-section-label" *ngIf="!sidebarCollapsed">Account</p>
+
+      <button class="nav-item" [class.active]="activeSection === 'profile'" (click)="setSection('profile')" [title]="sidebarCollapsed ? 'My Profile' : ''">
+        <div class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+          </svg>
+        </div>
+        <span class="nav-label" *ngIf="!sidebarCollapsed">My Profile</span>
+        <div class="nav-active-bar" *ngIf="activeSection === 'profile'"></div>
+      </button>
+
+      <button class="nav-item" [class.active]="activeSection === 'settings'" (click)="setSection('settings')" [title]="sidebarCollapsed ? 'Settings' : ''">
+        <div class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </div>
+        <span class="nav-label" *ngIf="!sidebarCollapsed">Settings</span>
+        <div class="nav-active-bar" *ngIf="activeSection === 'settings'"></div>
+      </button>
+    </nav>
+
+    <!-- Logout -->
+    <div class="sidebar-footer">
+      <button class="logout-btn" (click)="logout()" [title]="sidebarCollapsed ? 'Logout' : ''">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        <span *ngIf="!sidebarCollapsed">Logout</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="dashboard-main">
+
+    <!-- Top Bar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <h1 class="page-title">{{ getSectionTitle() }}</h1>
+        <p class="page-breadcrumb">Grand Horizon · {{ getSectionTitle() }}</p>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-date">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          {{ today | date:'EEEE, MMMM d, y' }}
+        </div>
+
+         <!-- ← ADD THIS THEME TOGGLE -->
+  <button class="theme-toggle" (click)="toggleTheme()" [title]="isDarkTheme ? 'Switch to Light' : 'Switch to Dark'">
+    <!-- Moon icon (shown in dark mode) -->
+    <svg *ngIf="isDarkTheme" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+    <!-- Sun icon (shown in light mode) -->
+    <svg *ngIf="!isDarkTheme" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+      <circle cx="12" cy="12" r="5"/>
+      <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+      <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+    </svg>
+  </button>
+
+        <div class="topbar-notif">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+          </svg>
+          <span class="notif-dot"></span>
+        </div>
+        <div class="topbar-avatar" (click)="setSection('profile')">{{ getUserInitials() }}</div>
+      </div>
+    </header>
+
+    <!-- ========== DASHBOARD SECTION ========== -->
+    <div class="section-content" *ngIf="activeSection === 'dashboard'" [@fadeIn]>
+
+      <!-- Welcome Banner -->
+      <div class="welcome-banner">
+        <div class="welcome-text">
+          <p class="welcome-eyebrow">Good {{ getTimeOfDay() }}</p>
+          <h2 class="welcome-name">{{ userName }} <span>👋</span></h2>
+          <p class="welcome-sub">You have <strong>2 upcoming stays</strong> and <strong>1 pending request</strong>. Have a wonderful day!</p>
+        </div>
+        <div class="welcome-visual">
+          <div class="welcome-icon">🏨</div>
+        </div>
+      </div>
+
+      <!-- Stat Cards -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon gold-bg">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2">
+              <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value">2</span>
+            <span class="stat-label">Upcoming Stays</span>
+          </div>
+          <div class="stat-trend up">↑ Active</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon green-bg">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#97C459" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value">7</span>
+            <span class="stat-label">Completed Stays</span>
+          </div>
+          <div class="stat-trend neutral">All time</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon blue-bg">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#85B7EB" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value">24</span>
+            <span class="stat-label">Nights Stayed</span>
+          </div>
+          <div class="stat-trend up">↑ Loyal Guest</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon amber-bg">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="2">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value">1,240</span>
+            <span class="stat-label">Reward Points</span>
+          </div>
+          <div class="stat-trend up">↑ Gold Tier</div>
+        </div>
+      </div>
+
+      <!-- Upcoming Booking + Quick Actions -->
+      <div class="dashboard-cols">
+
+        <!-- Upcoming Stay -->
+        <div class="dash-card upcoming-card">
+          <div class="card-header">
+            <h3>Upcoming Stay</h3>
+            <button class="card-link" (click)="setSection('bookings')">View all →</button>
+          </div>
+          <div class="booking-preview">
+            <div class="booking-room-icon">🛏️</div>
+            <div class="booking-details">
+              <span class="booking-room-name">Grand Deluxe Suite</span>
+              <span class="booking-dates">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                Dec 24 – Dec 28, 2025
+              </span>
+              <span class="booking-guests">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+                2 Guests · 4 Nights
+              </span>
+            </div>
+            <div class="booking-status confirmed">Confirmed</div>
+          </div>
+          <div class="booking-preview" style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(201,168,76,0.1);">
+            <div class="booking-room-icon">👑</div>
+            <div class="booking-details">
+              <span class="booking-room-name">Presidential Suite</span>
+              <span class="booking-dates">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                Jan 10 – Jan 14, 2026
+              </span>
+              <span class="booking-guests">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+                </svg>
+                1 Guest · 4 Nights
+              </span>
+            </div>
+            <div class="booking-status pending">Pending</div>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="dash-card quick-actions-card">
+          <div class="card-header"><h3>Quick Actions</h3></div>
+          <div class="quick-actions-grid">
+            <button class="quick-action" (click)="setSection('rooms')">
+              <div class="qa-icon">🛏️</div>
+              <span>Book a Room</span>
+            </button>
+            <button class="quick-action" (click)="setSection('services')">
+              <div class="qa-icon">🍽️</div>
+              <span>Room Service</span>
+            </button>
+            <button class="quick-action" (click)="setSection('services')">
+              <div class="qa-icon">💆</div>
+              <span>Book Spa</span>
+            </button>
+            <button class="quick-action" (click)="setSection('bookings')">
+              <div class="qa-icon">📋</div>
+              <span>My Bookings</span>
+            </button>
+            <button class="quick-action" (click)="setSection('history')">
+              <div class="qa-icon">🕐</div>
+              <span>Stay History</span>
+            </button>
+            <button class="quick-action" (click)="setSection('profile')">
+              <div class="qa-icon">👤</div>
+              <span>Edit Profile</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Loyalty Progress -->
+      <div class="dash-card loyalty-card">
+        <div class="card-header">
+          <h3>Loyalty Status</h3>
+          <span class="loyalty-tier gold-tier">⭐ Gold Member</span>
+        </div>
+        <div class="loyalty-bar-wrap">
+          <div class="loyalty-labels">
+            <span>Gold (1,240 pts)</span>
+            <span>Platinum at 2,000 pts</span>
+          </div>
+          <div class="loyalty-track">
+            <div class="loyalty-fill" style="width: 62%"></div>
+          </div>
+          <p class="loyalty-hint">760 more points to reach <strong>Platinum</strong> status</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ========== MY BOOKINGS SECTION ========== -->
+    <div class="section-content" *ngIf="activeSection === 'bookings'" [@fadeIn]>
+      <div class="bookings-filters">
+        <button class="filter-btn active">All (4)</button>
+        <button class="filter-btn">Upcoming</button>
+        <button class="filter-btn">Completed</button>
+        <button class="filter-btn">Cancelled</button>
+      </div>
+
+      <div class="bookings-list">
+        <div class="booking-card" *ngFor="let b of bookings">
+          <div class="bc-left">
+            <div class="bc-room-icon">{{ b.icon }}</div>
+            <div class="bc-info">
+              <span class="bc-room">{{ b.room }}</span>
+              <span class="bc-dates">{{ b.dates }}</span>
+              <span class="bc-guests">{{ b.guests }}</span>
+            </div>
+          </div>
+          <div class="bc-mid">
+            <span class="bc-nights">{{ b.nights }} nights</span>
+            <span class="bc-price">{{ b.price }}</span>
+          </div>
+          <div class="bc-right">
+            <span class="booking-status" [ngClass]="b.status.toLowerCase()">{{ b.status }}</span>
+            <div class="bc-actions">
+              <button class="bc-btn view">View</button>
+              <button class="bc-btn cancel" *ngIf="b.status === 'Confirmed' || b.status === 'Pending'">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== BROWSE ROOMS SECTION ========== -->
+    <div class="section-content" *ngIf="activeSection === 'rooms'" [@fadeIn]>
+      <div class="rooms-search-bar">
+        <div class="search-field">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          <input type="date" placeholder="Check In" />
+        </div>
+        <div class="search-field">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          <input type="date" placeholder="Check Out" />
+        </div>
+        <div class="search-field">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+          </svg>
+          <select><option>1 Guest</option><option>2 Guests</option><option>3 Guests</option><option>4+</option></select>
+        </div>
+        <button class="search-btn">Search</button>
+      </div>
+
+      <div class="rooms-grid-dash">
+        <div class="room-dash-card" *ngFor="let r of rooms">
+          <!-- <div class="rdc-image">{{ r.icon }}</div> -->
+           <div class="rdc-image">
+  <img [src]="r.image" [alt]="r.name" />
+  <div class="rdc-image-overlay"></div>
+  <span class="rdc-img-badge">{{ r.type }}</span>
+</div>
+          <div class="rdc-info">
+            <div class="rdc-meta">
+              <span class="rdc-type">{{ r.type }}</span>
+              <span class="rdc-rating">★ {{ r.rating }}</span>
+            </div>
+            <h4 class="rdc-name">{{ r.name }}</h4>
+            <p class="rdc-desc">{{ r.desc }}</p>
+            <div class="rdc-tags">
+              <span *ngFor="let tag of r.tags">{{ tag }}</span>
+            </div>
+            <div class="rdc-footer">
+              <div class="rdc-price">
+                <span class="from">From</span>
+                <span class="amount">{{ r.price }}</span>
+                <span class="per">/night</span>
+              </div>
+              <button class="rdc-book-btn">Book Now</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== HOTEL SERVICES SECTION ========== -->
+    <div class="section-content" *ngIf="activeSection === 'services'" [@fadeIn]>
+      <div class="services-grid">
+        <div class="service-card" *ngFor="let s of services">
+          <div class="service-icon-wrap">{{ s.icon }}</div>
+          <h4 class="service-name">{{ s.name }}</h4>
+          <p class="service-desc">{{ s.desc }}</p>
+          <button class="service-btn">{{ s.action }}</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== STAY HISTORY SECTION ========== -->
+    <div class="section-content" *ngIf="activeSection === 'history'" [@fadeIn]>
+      <div class="history-timeline">
+        <div class="history-item" *ngFor="let h of stayHistory">
+          <div class="history-dot"></div>
+          <div class="history-card">
+            <div class="history-left">
+              <span class="h-icon">{{ h.icon }}</span>
+              <div>
+                <span class="h-room">{{ h.room }}</span>
+                <span class="h-dates">{{ h.dates }}</span>
+              </div>
+            </div>
+            <div class="history-right">
+              <span class="h-price">{{ h.price }}</span>
+              <span class="h-nights">{{ h.nights }} nights</span>
+              <div class="h-stars">★★★★★</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== PROFILE SECTION ========== -->
+    <div class="section-content" *ngIf="activeSection === 'profile'" [@fadeIn]>
+      <div class="profile-layout">
+        <div class="profile-card-big">
+          <div class="profile-avatar-big">{{ getUserInitials() }}</div>
+          <h3 class="profile-full-name">{{ userName }}</h3>
+          <p class="profile-email">{{ userEmail }}</p>
+          <span class="profile-badge">⭐ Gold Member · 1,240 pts</span>
+          <div class="profile-stats-row">
+            <div class="ps">
+              <span class="ps-val">7</span>
+              <span class="ps-lbl">Stays</span>
+            </div>
+            <div class="ps">
+              <span class="ps-val">24</span>
+              <span class="ps-lbl">Nights</span>
+            </div>
+            <div class="ps">
+              <span class="ps-val">4.9</span>
+              <span class="ps-lbl">Rating</span>
+            </div>
+          </div>
+        </div>
+        <div class="profile-form-card">
+          <div class="card-header"><h3>Edit Profile</h3></div>
+          <div class="profile-form">
+            <div class="pf-group">
+              <label>Full Name</label>
+              <input type="text" [value]="userName" />
+            </div>
+            <div class="pf-group">
+              <label>Email Address</label>
+              <input type="email" [value]="userEmail" />
+            </div>
+            <div class="pf-group">
+              <label>Mobile Number</label>
+              <input type="tel" value="+91 98765 43210" />
+            </div>
+            <div class="pf-group">
+              <label>Date of Birth</label>
+              <input type="date" />
+            </div>
+            <div class="pf-group">
+              <label>Nationality</label>
+              <input type="text" value="Indian" />
+            </div>
+            <div class="pf-group">
+              <label>Preferred Room Type</label>
+              <select>
+                <option>Deluxe Room</option>
+                <option>Executive Suite</option>
+                <option>Presidential Suite</option>
+              </select>
+            </div>
+            <button class="save-btn">Save Changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== SETTINGS SECTION ========== -->
+    <div class="section-content" *ngIf="activeSection === 'settings'" [@fadeIn]>
+      <div class="settings-layout">
+        <div class="settings-group">
+          <h4 class="settings-group-title">Notifications</h4>
+          <div class="settings-row" *ngFor="let s of settingsNotif">
+            <div class="sr-info">
+              <span class="sr-label">{{ s.label }}</span>
+              <span class="sr-desc">{{ s.desc }}</span>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" [checked]="s.on" />
+              <span class="toggle-track"><span class="toggle-thumb"></span></span>
+            </label>
+          </div>
+        </div>
+        <div class="settings-group">
+          <h4 class="settings-group-title">Security</h4>
+          <div class="settings-row">
+            <div class="sr-info">
+              <span class="sr-label">Change Password</span>
+              <span class="sr-desc">Update your account password</span>
+            </div>
+            <button class="settings-btn">Update</button>
+          </div>
+          <div class="settings-row">
+            <div class="sr-info">
+              <span class="sr-label">Two-Factor Authentication</span>
+              <span class="sr-desc">Add an extra layer of security</span>
+            </div>
+            <button class="settings-btn">Enable</button>
+          </div>
+          <div class="settings-row danger-row">
+            <div class="sr-info">
+              <span class="sr-label">Delete Account</span>
+              <span class="sr-desc">Permanently remove your data</span>
+            </div>
+            <button class="settings-btn danger-btn">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>

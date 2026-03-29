@@ -52,11 +52,7 @@ public class SecurityConfig {
             
 
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/login","/auth/logout", "/auth/refresh","/login.html","/dashboard.html","/auth/register").permitAll()
-                .requestMatchers("/admin/**").hasRole("ADMIN")
-                .requestMatchers("/user/**").hasRole("USER")
-                .requestMatchers("/manager/**").hasRole("MANAGER")
-                .requestMatchers("/staff/**").hasRole("STAFF")
+                .requestMatchers("/auth/login","/auth/logout", "/auth/refresh","/auth/register","/auth/home").permitAll()
                 .anyRequest().authenticated()
             )
             
@@ -86,7 +82,7 @@ public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration config = new CorsConfiguration();
 
     config.setAllowedOrigins(List.of(
-            "http://localhost:5500",
+            "http://localhost:4200",
             "http://127.0.0.1:5500",
             "http://20.3.9.238:5500"
     ));

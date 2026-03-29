@@ -1,0 +1,722 @@
+<!-- ======= NAVBAR ======= -->
+<nav class="navbar" [class.scrolled]="isScrolled">
+    <div class="nav-container">
+        <div class="nav-logo">
+            <div class="logo-emblem">
+                <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="21" cy="21" r="20" stroke="#C9A84C" stroke-width="1.5" />
+                    <path d="M21 7 L21 35 M7 21 L35 21" stroke="#C9A84C" stroke-width="1" opacity="0.4" />
+                    <path d="M21 3 L28 14 L21 11 L14 14 Z" fill="#C9A84C" />
+                    <path d="M39 21 L28 28 L31 21 L28 14 Z" fill="#C9A84C" />
+                    <path d="M21 39 L14 28 L21 31 L28 28 Z" fill="#C9A84C" />
+                    <path d="M3 21 L14 14 L11 21 L14 28 Z" fill="#C9A84C" />
+                    <circle cx="21" cy="21" r="5" fill="none" stroke="#C9A84C" stroke-width="1.2" />
+                    <circle cx="21" cy="21" r="2" fill="#C9A84C" />
+                </svg>
+            </div>
+            <div class="logo-text">
+                <span class="logo-name">Grand Horizon</span>
+                <span class="logo-tagline">Luxury Collection</span>
+            </div>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="#rooms" class="nav-link">Rooms</a></li>
+            <li><a href="#amenities" class="nav-link">Amenities</a></li>
+            <li><a href="#about" class="nav-link">About</a></li>
+            <li><a href="#contact" class="nav-link">Contact</a></li>
+        </ul>
+
+        <div class="nav-actions">
+            <a class="btn-login" (click)="openLoginModal()" routerLink>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                </svg>
+                Login
+            </a>
+            <a href="#rooms" class="btn-book">Book Now</a>
+        </div>
+
+        <button class="hamburger" (click)="toggleMenu()" [class.active]="menuOpen">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" [class.open]="menuOpen">
+        <a href="#rooms" (click)="toggleMenu()">Rooms</a>
+        <a href="#amenities" (click)="toggleMenu()">Amenities</a>
+        <a href="#about" (click)="toggleMenu()">About</a>
+        <a href="#contact" (click)="toggleMenu()">Contact</a>
+        <a (click)="openLoginModal(); toggleMenu()" class="mobile-login">Login</a>
+    </div>
+</nav>
+
+<!-- ======= HERO SECTION ======= -->
+<section class="hero" id="home">
+    <div class="hero-bg">
+        <div class="hero-overlay"></div>
+        <div class="hero-pattern"></div>
+    </div>
+
+    <div class="hero-content">
+        <p class="hero-eyebrow">
+            <span class="eyebrow-line"></span>
+            Welcome to Grand Horizon
+            <span class="eyebrow-line"></span>
+        </p>
+        <h1 class="hero-title">
+            Where Luxury<br>
+            <em>Meets Horizon</em>
+        </h1>
+        <p class="hero-subtitle">
+            An extraordinary sanctuary where timeless elegance and modern comfort converge,
+            offering you an unparalleled experience above the clouds.
+        </p>
+
+        <div class="hero-cta">
+            <a href="#rooms" class="cta-primary">Explore Rooms</a>
+            <a href="#about" class="cta-secondary">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10" />
+                    <polygon points="10 8 16 12 10 16 10 8" />
+                </svg>
+                Watch Story
+            </a>
+        </div>
+
+        <div class="hero-stats">
+            <div class="stat">
+                <span class="stat-number">250+</span>
+                <span class="stat-label">Luxury Rooms</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat">
+                <span class="stat-number">4.9★</span>
+                <span class="stat-label">Guest Rating</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat">
+                <span class="stat-number">15+</span>
+                <span class="stat-label">Awards Won</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="hero-scroll">
+        <div class="scroll-indicator">
+            <div class="scroll-dot"></div>
+        </div>
+        <span>Scroll Down</span>
+    </div>
+
+    <!-- Booking Quick Bar -->
+    <div class="booking-bar">
+        <div class="booking-field">
+            <label>Check In</label>
+            <input type="date" />
+        </div>
+        <div class="booking-sep"></div>
+        <div class="booking-field">
+            <label>Check Out</label>
+            <input type="date" />
+        </div>
+        <div class="booking-sep"></div>
+        <div class="booking-field">
+            <label>Guests</label>
+            <select>
+                <option>1 Guest</option>
+                <option>2 Guests</option>
+                <option>3 Guests</option>
+                <option>4+ Guests</option>
+            </select>
+        </div>
+        <button class="booking-btn">Check Availability</button>
+    </div>
+</section>
+
+<!-- ======= ABOUT SECTION ======= -->
+<section class="about-strip" id="about">
+    <div class="about-inner">
+        <div class="about-badge">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="#C9A84C">
+                <path
+                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+            </svg>
+            Est. 1998 · 5-Star Luxury
+        </div>
+        <h2 class="about-heading">A Legacy of <span class="gold">Exceptional Hospitality</span></h2>
+        <p class="about-text">
+            Nestled at the heart of the city's most prestigious address, Grand Horizon has redefined luxury hospitality
+            for over two decades. Our philosophy is simple: every guest deserves an experience that transcends the
+            ordinary — from our award-winning cuisine to our meticulously curated interiors and world-class amenities.
+        </p>
+        <div class="about-features">
+            <div class="feature">
+                <div class="feature-icon">🍽️</div>
+                <span>Fine Dining</span>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">💆</div>
+                <span>Luxury Spa</span>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🏊</div>
+                <span>Rooftop Pool</span>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🏋️</div>
+                <span>Fitness Club</span>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🎭</div>
+                <span>Event Halls</span>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🚗</div>
+                <span>Valet Service</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ======= ROOMS SECTION ======= -->
+<section class="rooms-section" id="rooms">
+    <div class="section-header">
+        <p class="section-eyebrow">Accommodations</p>
+        <h2 class="section-title">Our <span class="gold">Signature</span> Rooms & Suites</h2>
+        <p class="section-subtitle">Each room is a masterpiece — crafted to envelop you in comfort and serenity</p>
+    </div>
+
+    <!-- <div class="rooms-grid"> -->
+
+        <!-- Room 1: Classic Room -->
+        <!-- <div class="room-card">
+            <div class="room-image-wrap">
+                <div class="room-img classic-img"></div>
+                <div class="room-badge">Most Popular</div>
+                <div class="room-overlay">
+                    <a href="#" class="room-view-btn">View Details</a>
+                </div>
+            </div>
+            <div class="room-info">
+                <div class="room-meta">
+                    <span class="room-type">Classic Room</span>
+                    <div class="room-rating">★★★★★</div>
+                </div>
+                <h3 class="room-name">Horizon Classic</h3>
+                <p class="room-desc">A serene retreat featuring plush king-size bedding, city-view windows, and
+                    hand-selected furnishings with modern amenities.</p>
+                <div class="room-amenities">
+                    <span>🛏 King Bed</span>
+                    <span>📶 Free WiFi</span>
+                    <span>🌆 City View</span>
+                    <span>❄️ AC</span>
+                </div>
+                <div class="room-footer">
+                    <div class="room-price">
+                        <span class="price-from">From</span>
+                        <span class="price-amount">₹8,500</span>
+                        <span class="price-per">/night</span>
+                    </div>
+                    <button class="btn-reserve">Reserve</button>
+                </div>
+            </div>
+        </div> -->
+
+        <!-- Room 2: Deluxe Room -->
+        <!-- <div class="room-card featured">
+            <div class="room-image-wrap">
+                <div class="room-img deluxe-img"></div>
+                <div class="room-badge gold-badge">Featured</div>
+                <div class="room-overlay">
+                    <a href="#" class="room-view-btn">View Details</a>
+                </div>
+            </div>
+            <div class="room-info">
+                <div class="room-meta">
+                    <span class="room-type">Deluxe Room</span>
+                    <div class="room-rating">★★★★★</div>
+                </div>
+                <h3 class="room-name">Grand Deluxe</h3>
+                <p class="room-desc">Expansive interiors with panoramic skyline views, a private lounge area, premium
+                    minibar, and signature Grand Horizon turndown service.</p>
+                <div class="room-amenities">
+                    <span>🛏 King Bed</span>
+                    <span>🌅 Skyline View</span>
+                    <span>🛁 Jacuzzi</span>
+                    <span>🥂 Minibar</span>
+                </div>
+                <div class="room-footer">
+                    <div class="room-price">
+                        <span class="price-from">From</span>
+                        <span class="price-amount">₹14,000</span>
+                        <span class="price-per">/night</span>
+                    </div>
+                    <button class="btn-reserve featured-btn">Reserve</button>
+                </div>
+            </div>
+        </div> -->
+
+        <!-- Room 3: Suite -->
+        <!-- <div class="room-card">
+            <div class="room-image-wrap">
+                <div class="room-img suite-img"></div>
+                <div class="room-overlay">
+                    <a href="#" class="room-view-btn">View Details</a>
+                </div>
+            </div>
+            <div class="room-info">
+                <div class="room-meta">
+                    <span class="room-type">Executive Suite</span>
+                    <div class="room-rating">★★★★★</div>
+                </div>
+                <h3 class="room-name">Executive Suite</h3>
+                <p class="room-desc">A full-floor suite with a dedicated butler, private dining area, and an exclusive
+                    terrace overlooking the city's glittering horizon.</p>
+                <div class="room-amenities">
+                    <span>🛏 Twin Beds</span>
+                    <span>🍽 Private Dining</span>
+                    <span>🧖 Butler</span>
+                    <span>🌃 Terrace</span>
+                </div>
+                <div class="room-footer">
+                    <div class="room-price">
+                        <span class="price-from">From</span>
+                        <span class="price-amount">₹28,000</span>
+                        <span class="price-per">/night</span>
+                    </div>
+                    <button class="btn-reserve">Reserve</button>
+                </div>
+            </div>
+        </div> -->
+
+        <!-- Room 4: Presidential Suite -->
+        <!-- <div class="room-card">
+            <div class="room-image-wrap">
+                <div class="room-img presidential-img"></div>
+                <div class="room-badge prestige-badge">Ultra Luxury</div>
+                <div class="room-overlay">
+                    <a href="#" class="room-view-btn">View Details</a>
+                </div>
+            </div>
+            <div class="room-info">
+                <div class="room-meta">
+                    <span class="room-type">Presidential Suite</span>
+                    <div class="room-rating">★★★★★</div>
+                </div>
+                <h3 class="room-name">Presidential Suite</h3>
+                <p class="room-desc">The crown jewel of Grand Horizon — a 3-room suite spanning 2,400 sq ft with bespoke
+                    art, a private pool, and 24-hour concierge service.</p>
+                <div class="room-amenities">
+                    <span>🛏 3 Bedrooms</span>
+                    <span>🏊 Private Pool</span>
+                    <span>🎨 Bespoke Art</span>
+                    <span>🎩 Concierge</span>
+                </div>
+                <div class="room-footer">
+                    <div class="room-price">
+                        <span class="price-from">From</span>
+                        <span class="price-amount">₹85,000</span>
+                        <span class="price-per">/night</span>
+                    </div>
+                    <button class="btn-reserve">Reserve</button>
+                </div>
+            </div>
+        </div> -->
+
+        <!-- Room 5: Family Suite -->
+        <!-- <div class="room-card">
+            <div class="room-image-wrap">
+                <div class="room-img family-img"></div>
+                <div class="room-overlay">
+                    <a href="#" class="room-view-btn">View Details</a>
+                </div>
+            </div>
+            <div class="room-info">
+                <div class="room-meta">
+                    <span class="room-type">Family Suite</span>
+                    <div class="room-rating">★★★★★</div>
+                </div>
+                <h3 class="room-name">Horizon Family</h3>
+                <p class="room-desc">Thoughtfully designed for families, with two interconnected rooms, a play area for
+                    children, and child-friendly dining options included.</p>
+                <div class="room-amenities">
+                    <span>🛏 2 Rooms</span>
+                    <span>🧒 Kid-Friendly</span>
+                    <span>🎮 Play Zone</span>
+                    <span>🍳 Breakfast</span>
+                </div>
+                <div class="room-footer">
+                    <div class="room-price">
+                        <span class="price-from">From</span>
+                        <span class="price-amount">₹22,000</span>
+                        <span class="price-per">/night</span>
+                    </div>
+                    <button class="btn-reserve">Reserve</button>
+                </div>
+            </div>
+        </div> -->
+
+        <!-- Room 6: Honeymoon Suite -->
+        <!-- <div class="room-card">
+            <div class="room-image-wrap">
+                <div class="room-img honeymoon-img"></div>
+                <div class="room-badge romance-badge">Romance</div>
+                <div class="room-overlay">
+                    <a href="#" class="room-view-btn">View Details</a>
+                </div>
+            </div>
+            <div class="room-info">
+                <div class="room-meta">
+                    <span class="room-type">Honeymoon Suite</span>
+                    <div class="room-rating">★★★★★</div>
+                </div>
+                <h3 class="room-name">Romance Suite</h3>
+                <p class="room-desc">An intimate sanctuary with rose petal turn-down, a couple's spa bath, candlelit
+                    dinner arrangements, and breathtaking sunset views.</p>
+                <div class="room-amenities">
+                    <span>🛏 Canopy Bed</span>
+                    <span>🌹 Romantic Setup</span>
+                    <span>🛁 Couple's Bath</span>
+                    <span>🌅 Sunset View</span>
+                </div>
+                <div class="room-footer">
+                    <div class="room-price">
+                        <span class="price-from">From</span>
+                        <span class="price-amount">₹35,000</span>
+                        <span class="price-per">/night</span>
+                    </div>
+                    <button class="btn-reserve">Reserve</button>
+                </div>
+            </div>
+        </div>
+
+    </div> -->
+    <div class="rooms-grid">
+  <div class="room-card" *ngFor="let r of rooms" [class.featured]="r.badgeClass === 'gold-badge'">
+
+    <div class="room-image-wrap">
+      <img [src]="r.image" [alt]="r.name" class="room-img-real" />
+      <div class="room-img-overlay"></div>
+      <div class="room-badge" *ngIf="r.badge" [ngClass]="r.badgeClass">{{ r.badge }}</div>
+      <div class="room-overlay">
+        <a href="#" class="room-view-btn">View Details</a>
+      </div>
+    </div>
+
+    <div class="room-info">
+      <div class="room-meta">
+        <span class="room-type">{{ r.type }}</span>
+        <div class="room-rating">{{ r.rating }}</div>
+      </div>
+      <h3 class="room-name">{{ r.name }}</h3>
+      <p class="room-desc">{{ r.desc }}</p>
+      <div class="room-amenities">
+        <span *ngFor="let a of r.amenities">{{ a }}</span>
+      </div>
+      <div class="room-footer">
+        <div class="room-price">
+          <span class="price-from">From</span>
+          <span class="price-amount">{{ r.price }}</span>
+          <span class="price-per">/night</span>
+        </div>
+        <button class="btn-reserve" [class.featured-btn]="r.badgeClass === 'gold-badge'">Reserve</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<!-- ======= AMENITIES STRIP ======= -->
+<section class="amenities-section" id="amenities">
+    <div class="amenities-inner">
+        <div class="amenities-text">
+            <p class="section-eyebrow light">Facilities</p>
+            <h2 class="amenities-title">World-Class <span class="gold">Amenities</span></h2>
+            <p class="amenities-desc">Beyond your room, Grand Horizon offers an extraordinary collection of experiences
+                — from culinary journeys to restorative wellness rituals.</p>
+            <ul class="amenities-list">
+                <li><span class="check">✦</span> Rooftop Infinity Pool & Sundeck</li>
+                <li><span class="check">✦</span> Le Ciel — Award-Winning Restaurant</li>
+                <li><span class="check">✦</span> The Horizon Spa & Wellness Centre</li>
+                <li><span class="check">✦</span> 24/7 Fitness & Wellness Studio</li>
+                <li><span class="check">✦</span> Grand Ballroom & Conference Suites</li>
+                <li><span class="check">✦</span> Curated Art Gallery & Lobby Lounge</li>
+            </ul>
+            <a href="#" class="cta-primary" style="margin-top: 2rem; display: inline-block;">Explore All Amenities</a>
+        </div>
+        <div class="amenities-visual">
+            <div class="visual-grid">
+                <div class="visual-card big pool-visual">
+                    <div class="visual-label">Rooftop Pool</div>
+                </div>
+                <div class="visual-card spa-visual">
+                    <div class="visual-label">Luxury Spa</div>
+                </div>
+                <div class="visual-card dining-visual">
+                    <div class="visual-label">Fine Dining</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ======= TESTIMONIALS ======= -->
+<section class="testimonials-section">
+    <div class="section-header">
+        <p class="section-eyebrow">Guest Stories</p>
+        <h2 class="section-title">What Our <span class="gold">Guests</span> Say</h2>
+    </div>
+    <div class="testimonials-grid">
+        <div class="testimonial-card">
+            <div class="quote-mark">"</div>
+            <p>An experience beyond words. The Presidential Suite was our home for a week and every morning felt like a
+                dream. Grand Horizon sets the standard for true luxury.</p>
+            <div class="testimonial-author">
+                <div class="author-avatar">RK</div>
+                <div>
+                    <strong>Rajiv Kapoor</strong>
+                    <span>Mumbai · Corporate Executive</span>
+                </div>
+            </div>
+            <div class="testimonial-stars">★★★★★</div>
+        </div>
+        <div class="testimonial-card featured-testimonial">
+            <div class="quote-mark">"</div>
+            <p>Our honeymoon was absolutely magical. The romance suite setup exceeded every expectation — the candlelit
+                dinner on the terrace will remain our most cherished memory forever.</p>
+            <div class="testimonial-author">
+                <div class="author-avatar">PS</div>
+                <div>
+                    <strong>Priya & Sameer</strong>
+                    <span>Delhi · Newlyweds</span>
+                </div>
+            </div>
+            <div class="testimonial-stars">★★★★★</div>
+        </div>
+        <div class="testimonial-card">
+            <div class="quote-mark">"</div>
+            <p>The staff's warmth and attentiveness is what truly sets Grand Horizon apart. From check-in to checkout,
+                every interaction felt genuinely personal and thoughtful.</p>
+            <div class="testimonial-author">
+                <div class="author-avatar">AM</div>
+                <div>
+                    <strong>Ananya Mehta</strong>
+                    <span>Bangalore · Travel Blogger</span>
+                </div>
+            </div>
+            <div class="testimonial-stars">★★★★★</div>
+        </div>
+    </div>
+</section>
+
+<!-- ======= CONTACT / FOOTER ======= -->
+<section class="contact-section" id="contact">
+    <div class="contact-inner">
+        <div class="contact-info">
+            <div class="footer-logo">
+                <svg width="36" height="36" viewBox="0 0 42 42" fill="none">
+                    <circle cx="21" cy="21" r="20" stroke="#C9A84C" stroke-width="1.5" />
+                    <path d="M21 3 L28 14 L21 11 L14 14 Z" fill="#C9A84C" />
+                    <path d="M39 21 L28 28 L31 21 L28 14 Z" fill="#C9A84C" />
+                    <path d="M21 39 L14 28 L21 31 L28 28 Z" fill="#C9A84C" />
+                    <path d="M3 21 L14 14 L11 21 L14 28 Z" fill="#C9A84C" />
+                    <circle cx="21" cy="21" r="2" fill="#C9A84C" />
+                </svg>
+                <span>Grand Horizon</span>
+            </div>
+            <p>12 Horizon Boulevard, Skyline District<br>Kolkata, West Bengal 700001</p>
+            <p>📞 +91 33 4000 5000<br>✉️ reservations@grandhorizon.in</p>
+            <div class="social-links">
+                <a href="#">IG</a>
+                <a href="#">FB</a>
+                <a href="#">TW</a>
+                <a href="#">LI</a>
+            </div>
+        </div>
+        <div class="contact-links">
+            <h4>Navigation</h4>
+            <a href="#home">Home</a>
+            <a href="#rooms">Rooms & Suites</a>
+            <a href="#amenities">Amenities</a>
+            <a href="#about">About Us</a>
+            <a (click)="openLoginModal()">Login / Register</a>
+        </div>
+        <div class="contact-links">
+            <h4>Services</h4>
+            <a href="#">Airport Transfer</a>
+            <a href="#">Event Planning</a>
+            <a href="#">Spa Booking</a>
+            <a href="#">Dining Reservations</a>
+            <a href="#">Corporate Stay</a>
+        </div>
+        <div class="contact-links">
+            <h4>Policies</h4>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Cancellation Policy</a>
+            <a href="#">FAQ</a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span>© 2025 Grand Horizon Luxury Collection. All rights reserved.</span>
+        <span>Crafted with ♥ for extraordinary guests</span>
+    </div>
+</section>
+
+<!-- ======= LOGIN MODAL ======= -->
+<div class="modal-backdrop" [class.active]="showLoginModal || showRegisterModal" (click)="closeModals()">
+    <div class="modal" (click)="$event.stopPropagation()">
+
+        <!-- LOGIN FORM -->
+        <div class="modal-panel" *ngIf="showLoginModal">
+            <button class="modal-close" (click)="closeModals()">✕</button>
+            <div class="modal-logo">
+                <svg width="32" height="32" viewBox="0 0 42 42" fill="none">
+                    <circle cx="21" cy="21" r="20" stroke="#C9A84C" stroke-width="1.5" />
+                    <path d="M21 3 L28 14 L21 11 L14 14 Z" fill="#C9A84C" />
+                    <path d="M39 21 L28 28 L31 21 L28 14 Z" fill="#C9A84C" />
+                    <path d="M21 39 L14 28 L21 31 L28 28 Z" fill="#C9A84C" />
+                    <path d="M3 21 L14 14 L11 21 L14 28 Z" fill="#C9A84C" />
+                    <circle cx="21" cy="21" r="2" fill="#C9A84C" />
+                </svg>
+                <span>Grand Horizon</span>
+            </div>
+            <h2 class="modal-title">Welcome Back</h2>
+            <p class="modal-subtitle">Sign in to your account to manage bookings</p>
+
+            <form class="modal-form" (ngSubmit)="onLogin()">
+                <div class="form-group">
+                    <label>Username or Email</label>
+                    <div class="input-wrap">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                            <circle cx="12" cy="7" r="4" />
+                        </svg>
+                        <input type="text" [(ngModel)]="loginData.email" name="email"
+                            placeholder="Enter your email" required />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="input-wrap">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                        </svg>
+                        <input type="password" [(ngModel)]="loginData.password" name="password"
+                            placeholder="Enter your password" required />
+                    </div>
+                </div>
+                <div class="form-meta">
+                    <label class="checkbox-wrap">
+                        <input type="checkbox" /> Remember me
+                    </label>
+                    <a href="#" class="forgot-link">Forgot password?</a>
+                </div>
+                <button type="submit" class="btn-modal-submit">Sign In</button>
+            </form>
+
+            <p class="modal-switch">
+                Not registered yet?
+                <a (click)="switchToRegister()">Create an account →</a>
+            </p>
+        </div>
+
+        <!-- REGISTER FORM -->
+        <div class="modal-panel" *ngIf="showRegisterModal">
+            <button class="modal-close" (click)="closeModals()">✕</button>
+            <div class="modal-logo">
+                <svg width="32" height="32" viewBox="0 0 42 42" fill="none">
+                    <circle cx="21" cy="21" r="20" stroke="#C9A84C" stroke-width="1.5" />
+                    <path d="M21 3 L28 14 L21 11 L14 14 Z" fill="#C9A84C" />
+                    <path d="M39 21 L28 28 L31 21 L28 14 Z" fill="#C9A84C" />
+                    <path d="M21 39 L14 28 L21 31 L28 28 Z" fill="#C9A84C" />
+                    <path d="M3 21 L14 14 L11 21 L14 28 Z" fill="#C9A84C" />
+                    <circle cx="21" cy="21" r="2" fill="#C9A84C" />
+                </svg>
+                <span>Grand Horizon</span>
+            </div>
+            <h2 class="modal-title">Join Grand Horizon</h2>
+            <p class="modal-subtitle">Create your account for exclusive privileges</p>
+
+            <form class="modal-form" (ngSubmit)="onRegister()">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <div class="input-wrap">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                            <circle cx="12" cy="7" r="4" />
+                        </svg>
+                        <input type="text" [(ngModel)]="registerData.name" name="name"
+                            placeholder="Enter your full name" required />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <div class="input-wrap">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                            <polyline points="22,6 12,13 2,6" />
+                        </svg>
+                        <input type="email" [(ngModel)]="registerData.email" name="email" placeholder="Enter your email"
+                            required />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Mobile Number</label>
+                    <div class="input-wrap">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2">
+                            <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
+                            <line x1="12" y1="18" x2="12.01" y2="18" />
+                        </svg>
+                        <input type="tel" [(ngModel)]="registerData.mobileno" name="mobile" placeholder="+91 XXXXX XXXXX"
+                            pattern="[0-9]{10}" maxlength="10" required />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="input-wrap">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                        </svg>
+                        <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="registerData.password" name="password"
+                            placeholder="Enter your password" required />
+                        <!-- Eye Button -->
+                        <span (click)="togglePassword()"
+                            style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">
+
+                            <!-- Show Eye -->
+                            <svg *ngIf="!showPassword" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                stroke="#666" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z" />
+                                <circle cx="12" cy="12" r="3" />
+                            </svg>
+
+                            <!-- Hide Eye -->
+                            <svg *ngIf="showPassword" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                stroke="#666" stroke-width="2">
+                                <path
+                                    d="M17.94 17.94A10.94 10.94 0 0 1 12 20C5 20 1 12 1 12a21.77 21.77 0 0 1 5.06-6.94" />
+                                <path d="M1 1l22 22" />
+                            </svg>
+
+                        </span>
+                    </div>
+
+                </div>
+                <button type="submit" class="btn-modal-submit">Create Account</button>
+            </form>
+
+            <p class="modal-switch">
+                Already have an account?
+                <a (click)="switchToLogin()">Sign in →</a>
+            </p>
+        </div>
+
+    </div>
+</div>

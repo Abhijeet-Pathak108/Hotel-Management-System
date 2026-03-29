@@ -19,19 +19,19 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 
     @Override
-    public UserDetails loadUserByUsername(String username)
+    public UserDetails loadUserByUsername(String email)
             throws UsernameNotFoundException {
 
-        com.example.demo.entity.User user = userRepo.findByUsername(username);
+        com.example.demo.entity.User user = userRepo.findByEmail(email);
         
         if(user == null) {
         	throw new UsernameNotFoundException("User not found");
         }
 
         return User.builder()
-                .username(user.getUsername())
+                .username(user.getEmail())
                 .password(user.getPassword())
-                .authorities(user.getRole()) 
+//                .authorities(user.getRole()) 
 //                .roles(user.getRole())
                 .build();
     }

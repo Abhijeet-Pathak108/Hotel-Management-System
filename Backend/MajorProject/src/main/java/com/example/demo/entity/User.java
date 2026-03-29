@@ -23,7 +23,10 @@ public class User {
     @Column(nullable = false, length = 100)
     private String password;
     
-    @Column(nullable = false)
-    private String role;
+    @Column(name = "email",nullable = false)
+    private String email;
+    
+    @Column(name = "mobileno")
+    private String mobileNo;
 
 }

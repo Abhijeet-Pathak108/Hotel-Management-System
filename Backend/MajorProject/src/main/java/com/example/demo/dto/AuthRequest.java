@@ -4,9 +4,10 @@ import lombok.Data;
 
 @Data
 public class AuthRequest {
-    private String username;
+    private String name;
     private String password;
-    private String role;
+    private String email;
+    private String mobileno;
 //    private long contactNO;
 //    private String address;
 //    private String Name;

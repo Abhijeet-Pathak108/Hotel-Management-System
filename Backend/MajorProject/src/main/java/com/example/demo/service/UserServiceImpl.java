@@ -28,16 +28,23 @@ public class UserServiceImpl implements UserService {
 	public void save(AuthRequest request) {
 		// TODO Auto-generated method stub
 		
-		if(userRepo.existsByUsername(request.getUsername())) {
+		if(userRepo.findByEmail(request.getEmail()) != null) {
 			throw new UserAlreadyExistException("User already exists..");
 		}
 		
 		User user = new User();
-		user.setUsername(request.getUsername());
+		user.setUsername(request.getName());
 		user.setPassword(passwordEncoder.encode(request.getPassword()));
-		user.setRole(request.getRole());
+		user.setEmail(request.getEmail());
+		user.setMobileNo(request.getMobileno());
 		userRepo.save(user);
 		
+	}
+
+	@Override
+	public User findByEmail(String email) {
+		// TODO Auto-generated method stub
+		return userRepo.findByEmail(email);
 	}
 
 }

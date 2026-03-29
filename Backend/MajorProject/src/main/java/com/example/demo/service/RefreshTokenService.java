@@ -34,14 +34,14 @@ public class RefreshTokenService {
     @Autowired
     private RefreshTokenRepository repo;
 
-    public RefreshToken create(String username) {
+    public RefreshToken create(String email) {
     	
     	String data=null;
     
     	
         RefreshToken token = new RefreshToken();
         token.setToken(UUID.randomUUID().toString());
-        User user = userService.findByUsername(username); // however you load user
+        User user = userService.findByEmail(email); // however you load user
         token.setUser(user);
 //        token.setExpiry(Instant.now().plus(refreshTokenMinute,ChronoUnit.MINUTES));
         token.setExpiry(Instant.now().plus(REFRESH_TOKEN_DAYS, ChronoUnit.DAYS));

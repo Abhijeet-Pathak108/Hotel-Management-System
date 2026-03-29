@@ -22,6 +22,7 @@ import com.example.demo.dto.AuthRequest;
 import com.example.demo.entity.Payment;
 import com.example.demo.entity.RefreshToken;
 import com.example.demo.entity.User;
+import com.example.demo.exception.UserAlreadyExistException;
 import com.example.demo.exception.UserNotFoundException;
 import com.example.demo.service.OrderDetailsService;
 import com.example.demo.service.RefreshTokenService;
@@ -60,34 +61,43 @@ public class AuthController {
     }
     
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody AuthRequest request){
-    	
-    	userService.save(request);
-    	
-//    	return ResponseEntity.ok(Map.of("username",request.getUsername(),"password",request.getPassword()));
-    	return ResponseEntity.ok(request);
-    	
+    public ResponseEntity<?> register(@RequestBody AuthRequest request) {
+
+        try {
+            userService.save(request);
+
+            return ResponseEntity.ok(Map.of("staus",200,"msg","User Registered Successfully!"));
+
+        } catch (UserAlreadyExistException e) {
+
+        	return ResponseEntity.status(409).body(
+        		    Map.of(
+        		        "status", 409,
+        		        "msg", e.getMessage()
+        		    )
+        		);
+        }
     }
     
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest request,
                                    HttpServletResponse response) {
     	
-    	
-    	User user = userService.findByUsername(request.getUsername());
+    	try {
+    	User user = userService.findByEmail(request.getEmail());
     	if(user == null) {
     		throw new UserNotFoundException("User not found, please register first");
     	}
 
         authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(
-                request.getUsername(),
+                request.getEmail(),
                 request.getPassword()
             )
         );
 
         String accessToken = jwtUtil.generateToken(user);
-        RefreshToken refreshToken = refreshTokenService.create(request.getUsername());
+        RefreshToken refreshToken = refreshTokenService.create(request.getEmail());
 
         ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken.getToken())
                 .httpOnly(true)
@@ -103,6 +113,9 @@ public class AuthController {
         System.out.println(">>> Refresh cookie added: " + cookie);
 
         return ResponseEntity.ok(Map.of("accessToken", accessToken,"refreshToken",refreshToken.getToken()));
+    }catch(UserNotFoundException e) {
+    	return ResponseEntity.status(401).body(Map.of("status",401,"msg",e.getMessage()));
+    }
     }
 
     @PostMapping("/refresh")

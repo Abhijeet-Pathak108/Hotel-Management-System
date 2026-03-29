@@ -9,4 +9,6 @@ public interface UserService {
 
 	void save(AuthRequest request);
 
+	User findByEmail(String email);
+
 }
