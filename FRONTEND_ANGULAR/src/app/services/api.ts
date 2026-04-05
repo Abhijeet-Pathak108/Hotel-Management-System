@@ -13,7 +13,7 @@ export interface AuthRequest {
 
 export class Api {
 
-  private baseUrl = 'http://localhost:8090/';
+  private baseUrl = 'http://localhost:8080/';
 
   constructor(private http: HttpClient) {}
 
