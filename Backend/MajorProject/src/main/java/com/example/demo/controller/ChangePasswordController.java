@@ -131,7 +131,6 @@ public class ChangePasswordController {
 	
 	public void sendOtpEmail(String toEmail, String otp) {
 	    SimpleMailMessage message = new SimpleMailMessage();
-//	    message.setFrom("bhaigamer184@gmail.com");
 	    message.setTo(toEmail);
 	    message.setSubject("Password Reset OTP");
 	    message.setText("Your OTP is: " + otp + "\nValid for 5 minutes.");

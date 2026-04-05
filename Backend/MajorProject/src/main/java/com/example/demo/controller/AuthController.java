@@ -9,6 +9,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -67,6 +68,12 @@ public class AuthController {
     
     @Autowired
     private UserRepository userRepo;
+    
+    @Value("${razorpay.key_id}")
+    private String keyId;
+
+    @Value("${razorpay.key_secret}")
+    private String keySecret;
     
     @GetMapping("/home")
     public String showHome() {
@@ -210,7 +217,7 @@ public class AuthController {
 
 	@PostMapping("/create-booking")
 	public ResponseEntity<?> createOrder(@RequestBody Map<String, Object> data) throws RazorpayException {
-		RazorpayClient client = new RazorpayClient("rzp_test_SXUnIdBFJwsrx6", "Jk2ifkZbiRrEqtCTmAqxlOGb");
+		RazorpayClient client = new RazorpayClient(keyId, keySecret);
 
 		JSONObject orderRequest = new JSONObject();
 		int amount = Integer.parseInt(data.get("amount").toString());
