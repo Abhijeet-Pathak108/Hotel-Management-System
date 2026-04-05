@@ -11,7 +11,6 @@ import { NgZone } from '@angular/core';
 import { User } from '../services/user';
 import { identifierName } from '@angular/compiler';
 import Swal from 'sweetalert2';
-import { environment } from '../../environment/environment';
 
 declare var Razorpay: any;
 
@@ -369,7 +368,7 @@ export class Dashboard implements OnInit {
       next: (order: any) => {
 
         const options = {
-          key: environment.razorpayKey,
+          key: 'rzp_test_SXUnIdBFJwsrx6',
           amount: order.amount,
           currency: 'INR',
           name: 'Grand Horizon Hotel',
