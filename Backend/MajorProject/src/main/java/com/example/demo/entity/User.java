@@ -42,6 +42,6 @@ public class User {
     private String roomType;
     
     @Column(name = "deletedflag")
-    private Integer deletedFlag;
+    private Integer deletedFlag = 0;
 
 }
