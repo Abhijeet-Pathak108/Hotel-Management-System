@@ -84,10 +84,11 @@ public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration config = new CorsConfiguration();
 
     config.setAllowedOrigins(List.of(
-            "http://localhost:4200",
-            "http://127.0.0.1:5500",
-            "http://20.3.9.238:5500"
-    ));
+    	    "http://localhost:4200",
+    	    "http://127.0.0.1:5500",
+    	    "http://20.3.9.238:5500",
+    	    "https://hotel-management-system-gzh6b4xuv-abhijeet-pathak108s-projects.vercel.app"
+    	));
 
 
     config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
