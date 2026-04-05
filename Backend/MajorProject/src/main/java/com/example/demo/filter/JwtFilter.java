@@ -35,7 +35,8 @@ public class JwtFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getServletPath();
         return path.equals("/auth/login") || path.equals("/auth/refresh") || path.equals("/auth/logout")
-        		|| path.equals("/auth/register");
+        		|| path.equals("/auth/register") || path.startsWith("/password/forgot-password")
+        		|| path.equals("/password/verify-otp") || path.equals("/password/reset-password");
     }
 
     
@@ -78,6 +79,8 @@ public class JwtFilter extends OncePerRequestFilter {
             } catch (RuntimeException ex) {
                 // ❌ DO NOT handle response here
                 // ✅ Let AuthenticationEntryPoint handle it
+            	System.out.println("JWT Filter Exception: " + ex.getMessage());
+                ex.printStackTrace();
                 request.setAttribute("JWT_EXCEPTION", ex);
             }
         }

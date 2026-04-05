@@ -1,7 +1,11 @@
 package com.example.demo.controller;
 
 import java.time.Duration;
+import java.util.Base64;
 import java.util.Map;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +23,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.AuthRequest;
+import com.example.demo.entity.Booking;
 import com.example.demo.entity.Payment;
 import com.example.demo.entity.RefreshToken;
 import com.example.demo.entity.User;
 import com.example.demo.exception.UserAlreadyExistException;
 import com.example.demo.exception.UserNotFoundException;
+import com.example.demo.repository.UserRepository;
+import com.example.demo.service.BookingService;
 import com.example.demo.service.OrderDetailsService;
 import com.example.demo.service.RefreshTokenService;
 import com.example.demo.service.UserService;
@@ -55,6 +62,12 @@ public class AuthController {
     @Autowired
     private RefreshTokenService refreshTokenService;
     
+    @Autowired
+    private BookingService bookingService;
+    
+    @Autowired
+    private UserRepository userRepo;
+    
     @GetMapping("/home")
     public String showHome() {
     	return "Welcome to JWT Authentication";
@@ -64,9 +77,16 @@ public class AuthController {
     public ResponseEntity<?> register(@RequestBody AuthRequest request) {
 
         try {
+        	
+        	User user = userRepo.findByEmail(request.getEmail());
+        	if(user!=null) {
+        		  return ResponseEntity.badRequest().body(
+        			        Map.of("status",400,"msg","User Already Registered!")
+        			    );
+        	}
             userService.save(request);
 
-            return ResponseEntity.ok(Map.of("staus",200,"msg","User Registered Successfully!"));
+            return ResponseEntity.ok(Map.of("staus",200,"msg","User Registered Successfully!","result",request.getEmail()));
 
         } catch (UserAlreadyExistException e) {
 
@@ -84,7 +104,7 @@ public class AuthController {
                                    HttpServletResponse response) {
     	
     	try {
-    	User user = userService.findByEmail(request.getEmail());
+    	User user = userService.findByEmailAndDeletedFlag(request.getEmail(),0);
     	if(user == null) {
     		throw new UserNotFoundException("User not found, please register first");
     	}
@@ -112,7 +132,7 @@ public class AuthController {
 
         System.out.println(">>> Refresh cookie added: " + cookie);
 
-        return ResponseEntity.ok(Map.of("accessToken", accessToken,"refreshToken",refreshToken.getToken()));
+        return ResponseEntity.ok(Map.of("accessToken", accessToken,"refreshToken",refreshToken.getToken(),"result",request.getEmail()));
     }catch(UserNotFoundException e) {
     	return ResponseEntity.status(401).body(Map.of("status",401,"msg",e.getMessage()));
     }
@@ -188,9 +208,9 @@ public class AuthController {
         return ResponseEntity.ok(Map.of("message", "Logged out"));
     }
 
-	@PostMapping("/create-order")
+	@PostMapping("/create-booking")
 	public ResponseEntity<?> createOrder(@RequestBody Map<String, Object> data) throws RazorpayException {
-		RazorpayClient client = new RazorpayClient("rzp_test_S41OxbRp67UfaE", "RAqHyxEqb8xjtF0Hu6KFv18z");
+		RazorpayClient client = new RazorpayClient("rzp_test_SXUnIdBFJwsrx6", "Jk2ifkZbiRrEqtCTmAqxlOGb");
 
 		JSONObject orderRequest = new JSONObject();
 		int amount = Integer.parseInt(data.get("amount").toString());
@@ -212,41 +232,109 @@ public class AuthController {
 
 		return ResponseEntity.ok(order.toString());
 	}
+	
+	@PostMapping("/verify-payment")
+	public ResponseEntity<?> verifyPayment(@RequestBody Map<String, String> data) {
 
-	@PostMapping("/verify")
-	public ResponseEntity<?> verifyPayment(@RequestBody Map<String, String> data) throws RazorpayException {
-		
-		String orderId = data.get("order_id");
-		String paymentId = data.get("payment_id");
-		String signature = data.get("signature");
+	    String orderId = data.get("razorpay_order_id");
+	    String paymentId = data.get("razorpay_payment_id");
+	    String signature = data.get("razorpay_signature");
+	    
 
-		String payload = orderId + "|" + paymentId;
-		
-		boolean isVerified = Utils.verifySignature(payload, signature, "RAqHyxEqb8xjtF0Hu6KFv18z");
+	    // 🔐 1. Verify signature (important)
+	    boolean isValid = verifySignature(orderId, paymentId, signature);
 
-		if(isVerified) {
-			
-			RazorpayClient client = new RazorpayClient("rzp_test_S41OxbRp67UfaE", "RAqHyxEqb8xjtF0Hu6KFv18z");
-	        com.razorpay.Payment razorpayPayment = client.payments.fetch(paymentId);
+	    if (!isValid) {
+	        return ResponseEntity.badRequest().body(Map.of("success", false));
+	    }
 
-	        String method = razorpayPayment.get("method"); // <-- Correct way
-	        String status = razorpayPayment.get("status"); // e.g. captured
+	    // 🔍 2. Find payment
+	    Payment payment = paymentService.findByOrderId(orderId);
 
-			Payment payment = paymentService.findByOrderId(orderId)
-					.orElseThrow(() -> new RuntimeException("Order not found"));
+	    // ✅ 3. Update payment
+	    payment.setStatus("SUCCESS");
+	    payment.setPaymentId(paymentId);
+	    payment.setSignature(signature);
+	    paymentService.save(payment);
 
-			payment.setPaymentId(paymentId);
-			payment.setSignature(signature);
-			payment.setStatus(status.toUpperCase());
-			payment.setMethod(method);
-			paymentService.save(payment);
-			
-			return ResponseEntity.ok("Payment Success");
-		} else {
-			
-			return ResponseEntity.status(400).body("Invalid Signature");
-		}
+	    // 🔥 4. CREATE BOOKING HERE
+//	    Booking booking = new Booking();
+//	    booking.setPayment(payment);
+//	    booking.setStatus("CONFIRMED");
+
+	    // TODO: set your fields
+	    // booking.setCheckIn(...)
+	    // booking.setCheckOut(...)
+	    // booking.setRoom(...)
+	    // booking.setGuestDetails(...)
+
+//	    bookingService.save(booking);
+
+	    return ResponseEntity.ok(Map.of("success", true));
 	}
+	
+	public boolean verifySignature(String orderId, String paymentId, String razorpaySignature) {
+    try {
+        String secret = "Jk2ifkZbiRrEqtCTmAqxlOGb";
+
+        String payload = orderId + "|" + paymentId;
+
+        Mac sha256_HMAC = Mac.getInstance("HmacSHA256");
+        SecretKeySpec secret_key = new SecretKeySpec(secret.getBytes(), "HmacSHA256");
+        sha256_HMAC.init(secret_key);
+
+        byte[] hash = sha256_HMAC.doFinal(payload.getBytes());
+
+        // 🔥 Convert to HEX (NOT Base64)
+        StringBuilder hexString = new StringBuilder();
+        for (byte b : hash) {
+            hexString.append(String.format("%02x", b));
+        }
+
+        String generatedSignature = hexString.toString();
+
+        return generatedSignature.equals(razorpaySignature);
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        return false;
+    }
+}
+
+//	@PostMapping("/verify-payment")
+//	public ResponseEntity<?> verifyPayment(@RequestBody Map<String, String> data) throws RazorpayException {
+//		
+//		String orderId = data.get("order_id");
+//		String paymentId = data.get("payment_id");
+//		String signature = data.get("signature");
+//
+//		String payload = orderId + "|" + paymentId;
+//		
+//		boolean isVerified = Utils.verifySignature(payload, signature, "RAqHyxEqb8xjtF0Hu6KFv18z");
+//
+//		if(isVerified) {
+//			
+//			RazorpayClient client = new RazorpayClient("rzp_test_S41OxbRp67UfaE", "RAqHyxEqb8xjtF0Hu6KFv18z");
+//	        com.razorpay.Payment razorpayPayment = client.payments.fetch(paymentId);
+//
+//	        String method = razorpayPayment.get("method"); // <-- Correct way
+//	        String status = razorpayPayment.get("status"); // e.g. captured
+//
+//			Payment payment = paymentService.findByOrderId(orderId)
+//					.orElseThrow(() -> new RuntimeException("Order not found"));
+//
+//			payment.setPaymentId(paymentId);
+//			payment.setSignature(signature);
+//			payment.setStatus(status.toUpperCase());
+//			payment.setMethod(method);
+//			paymentService.save(payment);
+//			
+//			return ResponseEntity.ok("Payment Success");
+//		} else {
+//			
+//			return ResponseEntity.status(400).body("Invalid Signature");
+//		}
+//	}
 
 
 }

@@ -5,6 +5,7 @@ import { LandingPage } from './landing-page/landing-page';
 import { Alert as AlertService } from './services/alert';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef } from '@angular/core';
+import { Alert } from './services/alert';
 
 @Component({
   selector: 'app-root',
@@ -17,33 +18,38 @@ export class App implements OnInit {
 
   message = signal('Loading...');
 
-  
-    alertData = {
+
+  alertData = {
     show: false,
     type: '',
     message: ''
   };
 
   constructor(private api: Api, public alertService: AlertService,
-              private cdr: ChangeDetectorRef
-  ) {}
+    private cdr: ChangeDetectorRef,
+  ) { }
+
+  // dismissAlert() {
+  //   this.alertService.dismiss();
+  //   this.cdr.detectChanges();
+  // }
 
   ngDoCheck() {
-  this.cdr.detectChanges();
-}
+    this.cdr.detectChanges();
+  }
 
   ngOnInit(): void {
     this.api.getHome().subscribe({
-      next: (res)=>{
+      next: (res) => {
         console.log("response from backend: ", res);
         this.message.set(res);
         console.log(this.message);
-        
+
       },
-      error: (err)=>{
+      error: (err) => {
         this.message.set("Error while fetching message");
       }
     })
-      
+
   }
 }

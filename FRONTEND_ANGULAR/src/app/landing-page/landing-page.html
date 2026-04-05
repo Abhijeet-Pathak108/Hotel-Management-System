@@ -1,3 +1,21 @@
+<!-- ======= ALERT TOAST ======= -->
+<div class="alert-toast" 
+     *ngIf="alertService.show_alert() && alertService.message()"
+     [ngClass]="alertService.type()">
+  <div class="alert-icon">
+    <span *ngIf="alertService.type() === 'success'">✔</span>
+    <span *ngIf="alertService.type() === 'error'">✕</span>
+    <span *ngIf="alertService.type() === 'warning'">⚠</span>
+    <span *ngIf="alertService.type() === 'info'">ℹ</span>
+  </div>
+  <div class="alert-body">
+    <strong>{{ alertService.title() }}</strong>
+    <p>{{ alertService.message() }}</p>
+  </div>
+  <button class="alert-close" (click)="dismissAlert()">✕</button>
+</div>
+
+
 <!-- ======= NAVBAR ======= -->
 <nav class="navbar" [class.scrolled]="isScrolled">
     <div class="nav-container">
@@ -35,7 +53,7 @@
                 </svg>
                 Login
             </a>
-            <a href="#rooms" class="btn-book">Book Now</a>
+            <a (click)="handleBookNow()" class="btn-book">Book Now</a>
         </div>
 
         <button class="hamburger" (click)="toggleMenu()" [class.active]="menuOpen">
@@ -112,7 +130,7 @@
     </div>
 
     <!-- Booking Quick Bar -->
-    <div class="booking-bar">
+    <!-- <div class="booking-bar">
         <div class="booking-field">
             <label>Check In</label>
             <input type="date" />
@@ -133,7 +151,7 @@
             </select>
         </div>
         <button class="booking-btn">Check Availability</button>
-    </div>
+    </div> -->
 </section>
 
 <!-- ======= ABOUT SECTION ======= -->
@@ -191,8 +209,8 @@
 
     <!-- <div class="rooms-grid"> -->
 
-        <!-- Room 1: Classic Room -->
-        <!-- <div class="room-card">
+    <!-- Room 1: Classic Room -->
+    <!-- <div class="room-card">
             <div class="room-image-wrap">
                 <div class="room-img classic-img"></div>
                 <div class="room-badge">Most Popular</div>
@@ -225,8 +243,8 @@
             </div>
         </div> -->
 
-        <!-- Room 2: Deluxe Room -->
-        <!-- <div class="room-card featured">
+    <!-- Room 2: Deluxe Room -->
+    <!-- <div class="room-card featured">
             <div class="room-image-wrap">
                 <div class="room-img deluxe-img"></div>
                 <div class="room-badge gold-badge">Featured</div>
@@ -259,8 +277,8 @@
             </div>
         </div> -->
 
-        <!-- Room 3: Suite -->
-        <!-- <div class="room-card">
+    <!-- Room 3: Suite -->
+    <!-- <div class="room-card">
             <div class="room-image-wrap">
                 <div class="room-img suite-img"></div>
                 <div class="room-overlay">
@@ -292,8 +310,8 @@
             </div>
         </div> -->
 
-        <!-- Room 4: Presidential Suite -->
-        <!-- <div class="room-card">
+    <!-- Room 4: Presidential Suite -->
+    <!-- <div class="room-card">
             <div class="room-image-wrap">
                 <div class="room-img presidential-img"></div>
                 <div class="room-badge prestige-badge">Ultra Luxury</div>
@@ -326,8 +344,8 @@
             </div>
         </div> -->
 
-        <!-- Room 5: Family Suite -->
-        <!-- <div class="room-card">
+    <!-- Room 5: Family Suite -->
+    <!-- <div class="room-card">
             <div class="room-image-wrap">
                 <div class="room-img family-img"></div>
                 <div class="room-overlay">
@@ -359,8 +377,8 @@
             </div>
         </div> -->
 
-        <!-- Room 6: Honeymoon Suite -->
-        <!-- <div class="room-card">
+    <!-- Room 6: Honeymoon Suite -->
+    <!-- <div class="room-card">
             <div class="room-image-wrap">
                 <div class="room-img honeymoon-img"></div>
                 <div class="room-badge romance-badge">Romance</div>
@@ -395,39 +413,39 @@
 
     </div> -->
     <div class="rooms-grid">
-  <div class="room-card" *ngFor="let r of rooms" [class.featured]="r.badgeClass === 'gold-badge'">
+        <div class="room-card" *ngFor="let r of rooms" [class.featured]="r.badgeClass === 'gold-badge'">
 
-    <div class="room-image-wrap">
-      <img [src]="r.image" [alt]="r.name" class="room-img-real" />
-      <div class="room-img-overlay"></div>
-      <div class="room-badge" *ngIf="r.badge" [ngClass]="r.badgeClass">{{ r.badge }}</div>
-      <div class="room-overlay">
-        <a href="#" class="room-view-btn">View Details</a>
-      </div>
-    </div>
+            <div class="room-image-wrap">
+                <img [src]="r.image" [alt]="r.name" class="room-img-real" />
+                <div class="room-img-overlay"></div>
+                <div class="room-badge" *ngIf="r.badge" [ngClass]="r.badgeClass">{{ r.badge }}</div>
+                <div class="room-overlay">
+                    <a (click)="openRoomDetails(r)" class="room-view-btn">View Details</a>
+                </div>
+            </div>
 
-    <div class="room-info">
-      <div class="room-meta">
-        <span class="room-type">{{ r.type }}</span>
-        <div class="room-rating">{{ r.rating }}</div>
-      </div>
-      <h3 class="room-name">{{ r.name }}</h3>
-      <p class="room-desc">{{ r.desc }}</p>
-      <div class="room-amenities">
-        <span *ngFor="let a of r.amenities">{{ a }}</span>
-      </div>
-      <div class="room-footer">
-        <div class="room-price">
-          <span class="price-from">From</span>
-          <span class="price-amount">{{ r.price }}</span>
-          <span class="price-per">/night</span>
+            <div class="room-info">
+                <div class="room-meta">
+                    <span class="room-type">{{ r.type }}</span>
+                    <div class="room-rating">{{ r.rating }}</div>
+                </div>
+                <h3 class="room-name">{{ r.name }}</h3>
+                <p class="room-desc">{{ r.desc }}</p>
+                <div class="room-amenities">
+                    <span *ngFor="let a of r.amenities">{{ a }}</span>
+                </div>
+                <div class="room-footer">
+                    <div class="room-price">
+                        <span class="price-from">From</span>
+                        <span class="price-amount">{{ r.price }}</span>
+                        <span class="price-per">/night</span>
+                    </div>
+                    <button class="btn-reserve" [class.featured-btn]="r.badgeClass === 'gold-badge'" (click)="handleBookNow()">Reserve</button>
+                </div>
+            </div>
+
         </div>
-        <button class="btn-reserve" [class.featured-btn]="r.badgeClass === 'gold-badge'">Reserve</button>
-      </div>
     </div>
-
-  </div>
-</div>
 </section>
 
 <!-- ======= AMENITIES STRIP ======= -->
@@ -446,7 +464,7 @@
                 <li><span class="check">✦</span> Grand Ballroom & Conference Suites</li>
                 <li><span class="check">✦</span> Curated Art Gallery & Lobby Lounge</li>
             </ul>
-            <a href="#" class="cta-primary" style="margin-top: 2rem; display: inline-block;">Explore All Amenities</a>
+            <a (click)="openAmenitiesModal()" class="cta-primary" style="margin-top: 2rem; display: inline-block;">Explore All Amenities</a>
         </div>
         <div class="amenities-visual">
             <div class="visual-grid">
@@ -547,18 +565,27 @@
         </div>
         <div class="contact-links">
             <h4>Services</h4>
-            <a href="#">Airport Transfer</a>
+            <!-- <a href="#">Airport Transfer</a>
             <a href="#">Event Planning</a>
             <a href="#">Spa Booking</a>
             <a href="#">Dining Reservations</a>
-            <a href="#">Corporate Stay</a>
+            <a href="#">Corporate Stay</a> -->
+            <a>Airport Transfer</a>
+            <a>Event Planning</a>
+            <a>Spa Booking</a>
+            <a>Dining Reservations</a>
+            <a>Corporate Stay</a>       
         </div>
         <div class="contact-links">
             <h4>Policies</h4>
-            <a href="#">Privacy Policy</a>
+            <!-- <a href="#">Privacy Policy</a>
             <a href="#">Terms of Service</a>
             <a href="#">Cancellation Policy</a>
-            <a href="#">FAQ</a>
+            <a href="#">FAQ</a> -->
+            <a>Privacy Policy</a>
+            <a>Terms of Service</a>
+            <a>Cancellation Policy</a>
+            <a>FAQ</a>
         </div>
     </div>
     <div class="footer-bottom">
@@ -568,7 +595,9 @@
 </section>
 
 <!-- ======= LOGIN MODAL ======= -->
-<div class="modal-backdrop" [class.active]="showLoginModal || showRegisterModal" (click)="closeModals()">
+<div class="modal-backdrop"
+    [class.active]="showLoginModal || showRegisterModal || showForgotModal || showResetPasswordModal || showAmenitiesModal"
+    (click)="closeModals()">
     <div class="modal" (click)="$event.stopPropagation()">
 
         <!-- LOGIN FORM -->
@@ -596,8 +625,8 @@
                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                             <circle cx="12" cy="7" r="4" />
                         </svg>
-                        <input type="text" [(ngModel)]="loginData.email" name="email"
-                            placeholder="Enter your email" required />
+                        <input type="text" [(ngModel)]="loginData.email" name="email" placeholder="Enter your email"
+                            required />
                     </div>
                 </div>
                 <div class="form-group">
@@ -607,15 +636,38 @@
                             <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                             <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                         </svg>
-                        <input type="password" [(ngModel)]="loginData.password" name="password"
-                            placeholder="Enter your password" required />
+                        <!-- <input type="password" [(ngModel)]="loginData.password" name="password"
+                            placeholder="Enter your password" required /> -->
+                            <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="loginData.password"
+                            name="password" placeholder="Enter your password" autocomplete="new-password" required />
+                        <!-- Eye Button -->
+                        <span (click)="togglePassword()"
+                            style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">
+
+                            <!-- Show Eye -->
+                            <svg *ngIf="!showPassword" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                stroke="#666" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z" />
+                                <circle cx="12" cy="12" r="3" />
+                            </svg>
+
+                            <!-- Hide Eye -->
+                            <svg *ngIf="showPassword" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                stroke="#666" stroke-width="2">
+                                <path
+                                    d="M17.94 17.94A10.94 10.94 0 0 1 12 20C5 20 1 12 1 12a21.77 21.77 0 0 1 5.06-6.94" />
+                                <path d="M1 1l22 22" />
+                            </svg>
+
+                        </span>
                     </div>
                 </div>
                 <div class="form-meta">
-                    <label class="checkbox-wrap">
+                    <!-- <label class="checkbox-wrap">
                         <input type="checkbox" /> Remember me
-                    </label>
-                    <a href="#" class="forgot-link">Forgot password?</a>
+                    </label> -->
+                    <!-- <a href="#" class="forgot-link">Forgot password?</a> -->
+                    <a class="forgot-link" (click)="openForgotPassword()">Forgot password?</a>
                 </div>
                 <button type="submit" class="btn-modal-submit">Sign In</button>
             </form>
@@ -624,6 +676,105 @@
                 Not registered yet?
                 <a (click)="switchToRegister()">Create an account →</a>
             </p>
+        </div>
+
+        <!-- FORGOT PASSWORD MODAL -->
+        <div class="modal-panel" *ngIf="showForgotModal">
+            <button class="modal-close" (click)="closeModals()">✕</button>
+
+            <h2 class="modal-title">Forgot Password</h2>
+            <p class="modal-subtitle">Enter your email to receive OTP</p>
+
+            <div class="form-group">
+                <label>Email</label>
+                <div class="input-wrap">
+                    <input type="email" [(ngModel)]="forgotEmail" placeholder="Enter your email" />
+                </div>
+            </div>
+
+            <button class="btn-modal-submit" (click)="sendOtp()">Send OTP</button>
+
+            <!-- OTP FIELD -->
+            <div *ngIf="showOtpField" style="margin-top: 1rem;">
+                <div class="form-group">
+                    <label>Enter OTP</label>
+                    <div class="input-wrap">
+                        <input type="text" [(ngModel)]="enteredOtp" placeholder="Enter OTP" />
+                    </div>
+                </div>
+
+                <button class="btn-modal-submit" (click)="verifyOtp()">Verify OTP</button>
+            </div>
+        </div>
+
+
+        <!-- RESET PASSWORD MODAL -->
+        <div class="modal-panel" *ngIf="showResetPasswordModal">
+            <button class="modal-close" (click)="closeModals()">✕</button>
+
+            <h2 class="modal-title">Reset Password</h2>
+            <p class="modal-subtitle">Enter your new password</p>
+
+            <div class="form-group">
+                <label>New Password</label>
+                <div class="input-wrap">
+                    <!-- <input type="password" [(ngModel)]="newPassword" placeholder="New password" /> -->
+                     <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="newPassword"
+                            name="password" placeholder="New password" required />
+                        <!-- Eye Button -->
+                        <span (click)="togglePassword()"
+                            style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">
+
+                            <!-- Show Eye -->
+                            <svg *ngIf="!showPassword" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                stroke="#666" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z" />
+                                <circle cx="12" cy="12" r="3" />
+                            </svg>
+
+                            <!-- Hide Eye -->
+                            <svg *ngIf="showPassword" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                stroke="#666" stroke-width="2">
+                                <path
+                                    d="M17.94 17.94A10.94 10.94 0 0 1 12 20C5 20 1 12 1 12a21.77 21.77 0 0 1 5.06-6.94" />
+                                <path d="M1 1l22 22" />
+                            </svg>
+
+                        </span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Confirm Password</label>
+                <div class="input-wrap">
+                    <!-- <input type="password" [(ngModel)]="confirmPassword" placeholder="Confirm password" /> -->
+                     <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="confirmPassword"
+                             placeholder="Confirm password" required />
+                        <!-- Eye Button -->
+                        <span (click)="togglePassword()"
+                            style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">
+
+                            <!-- Show Eye -->
+                            <svg *ngIf="!showPassword" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                stroke="#666" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z" />
+                                <circle cx="12" cy="12" r="3" />
+                            </svg>
+
+                            <!-- Hide Eye -->
+                            <svg *ngIf="showPassword" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                stroke="#666" stroke-width="2">
+                                <path
+                                    d="M17.94 17.94A10.94 10.94 0 0 1 12 20C5 20 1 12 1 12a21.77 21.77 0 0 1 5.06-6.94" />
+                                <path d="M1 1l22 22" />
+                            </svg>
+
+                        </span>
+
+                </div>
+            </div>
+
+            <button class="btn-modal-submit" (click)="resetPassword()">Change Password</button>
         </div>
 
         <!-- REGISTER FORM -->
@@ -673,8 +824,8 @@
                             <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
                             <line x1="12" y1="18" x2="12.01" y2="18" />
                         </svg>
-                        <input type="tel" [(ngModel)]="registerData.mobileno" name="mobile" placeholder="+91 XXXXX XXXXX"
-                            pattern="[0-9]{10}" maxlength="10" required />
+                        <input type="tel" [(ngModel)]="registerData.mobileno" name="mobile"
+                            placeholder="+91 XXXXX XXXXX" pattern="[0-9]{10}" maxlength="10" required />
                     </div>
                 </div>
                 <div class="form-group">
@@ -684,8 +835,8 @@
                             <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                             <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                         </svg>
-                        <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="registerData.password" name="password"
-                            placeholder="Enter your password" required />
+                        <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="registerData.password"
+                            name="password" placeholder="Enter your password" required />
                         <!-- Eye Button -->
                         <span (click)="togglePassword()"
                             style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">
@@ -719,4 +870,83 @@
         </div>
 
     </div>
+</div>
+
+<!-- ROOM DETAILS MODAL -->
+<div class="modal-backdrop" [class.active]="showRoomModal" (click)="closeRoomModal()">
+  <div class="modal room-modal" (click)="$event.stopPropagation()">
+
+    <button class="modal-close" (click)="closeRoomModal()">✕</button>
+
+    <div *ngIf="selectedRoom">
+
+      <h2 class="modal-title">{{ selectedRoom.name }}</h2>
+      <p class="modal-subtitle">{{ selectedRoom.desc }}</p>
+
+      <!-- Image -->
+    <img 
+  [src]="selectedRoom.image" 
+  alt="room image"
+  style="width: 100%; height: 220px; object-fit: cover; border-radius: 4px; margin: 1rem 0;"
+/>
+
+      <!-- Info -->
+      <div class="room-detail-grid">
+
+        <div class="detail-box">
+          <label>Price</label>
+          <span>{{ selectedRoom.price }} / night</span>
+        </div>
+
+        <div class="detail-box">
+          <label>Room Size</label>
+          <span>{{ selectedRoom.size }}</span>
+        </div>
+
+        <div class="detail-box">
+          <label>Occupancy</label>
+          <span>{{ selectedRoom.occupancy }}</span>
+        </div>
+
+      </div>
+
+      <!-- Features -->
+      <div class="room-features">
+        <h4>Room Features</h4>
+        <ul>
+          <li *ngFor="let f of selectedRoom.amenities">✦ {{ f }}</li>
+        </ul>
+      </div>
+
+      <!-- CTA -->
+      <button class="btn-modal-submit" (click)="handleBookNow()">
+        Book This Room
+      </button>
+
+    </div>
+  </div>
+</div>
+
+<!-- AMENITIES MODAL -->
+<div class="modal-backdrop" [class.active]="showAmenitiesModal" (click)="closeAmenitiesModal()">
+  <div class="modal amenities-modal" (click)="$event.stopPropagation()">
+
+    <button class="modal-close" (click)="closeAmenitiesModal()">✕</button>
+
+    <h2 class="modal-title">World-Class Amenities</h2>
+    <p class="modal-subtitle">
+      Experience luxury beyond expectations with our premium offerings
+    </p>
+
+    <div class="amenities-grid">
+
+      <div class="amenity-card" *ngFor="let a of amenitiesList">
+        <div class="amenity-icon">{{ a.icon }}</div>
+        <h4>{{ a.title }}</h4>
+        <p>{{ a.desc }}</p>
+      </div>
+
+    </div>
+
+  </div>
 </div>

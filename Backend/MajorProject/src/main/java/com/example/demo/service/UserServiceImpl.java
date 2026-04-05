@@ -47,4 +47,10 @@ public class UserServiceImpl implements UserService {
 		return userRepo.findByEmail(email);
 	}
 
+	@Override
+	public User findByEmailAndDeletedFlag(String email, Integer flag) {
+		// TODO Auto-generated method stub
+		return userRepo.findByEmailAndDeletedFlag(email,flag);
+	}
+
 }

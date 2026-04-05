@@ -2,3 +2,36 @@
 .swal2-container {
   z-index: 9999 !important;
 }
+
+.swal-custom-popup {
+  border-radius: 12px !important;
+  padding: 20px !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18) !important;
+  font-family: inherit;
+}
+
+.swal-confirm-btn {
+  background: #1a7f4b !important;
+  color: #fff !important;
+  padding: 8px 16px !important;
+  border-radius: 8px !important;
+  border: none !important;
+}
+
+.swal-cancel-btn {
+  background: #c0392b !important;
+  color: #fff !important;
+  padding: 8px 16px !important;
+  border-radius: 8px !important;
+  border: none !important;
+}
+
+.swal-title {
+  font-size: 18px !important;
+  font-weight: 600 !important;
+}
+
+.swal-text {
+  font-size: 14px !important;
+  color: #555 !important;
+}

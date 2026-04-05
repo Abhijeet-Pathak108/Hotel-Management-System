@@ -1,5 +1,8 @@
 package com.example.demo.entity;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,7 +20,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, length = 125)
+    @Column(name = "fullname", nullable = false, length = 125)
     private String username;
 
     @Column(nullable = false, length = 100)
@@ -28,5 +31,17 @@ public class User {
     
     @Column(name = "mobileno")
     private String mobileNo;
+    
+    @Column(name = "dateofbirth")
+    private LocalDate dateOfBirth;
+    
+    @Column(name = "nationality")
+    private String nationality;
+    
+    @Column(name = "roomtype")
+    private String roomType;
+    
+    @Column(name = "deletedflag")
+    private Integer deletedFlag;
 
 }

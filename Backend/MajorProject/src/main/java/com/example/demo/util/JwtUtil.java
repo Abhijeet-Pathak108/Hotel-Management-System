@@ -1,6 +1,7 @@
 package com.example.demo.util;
 
 import java.nio.charset.StandardCharsets;
+
 import java.security.Key;
 import java.util.Date;
 
@@ -35,7 +36,7 @@ public class JwtUtil {
     public String generateToken(User user) {
 
         return Jwts.builder()
-            .setSubject(user.getUsername())
+            .setSubject(user.getEmail())
 //            .claim("role", user.getRole())
             .setIssuedAt(new Date())
             .setExpiration(

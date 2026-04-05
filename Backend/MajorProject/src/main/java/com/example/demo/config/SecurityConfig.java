@@ -52,7 +52,9 @@ public class SecurityConfig {
             
 
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/login","/auth/logout", "/auth/refresh","/auth/register","/auth/home").permitAll()
+                .requestMatchers("/auth/login","/auth/logout", "/auth/refresh","/auth/register","/auth/home",
+                		"/password/forgot-password","/password/verify-otp",
+                		"/password/reset-password").permitAll()
                 .anyRequest().authenticated()
             )
             

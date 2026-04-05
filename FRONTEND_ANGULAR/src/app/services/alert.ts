@@ -1,37 +1,36 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class Alert {
-  show_alert = false;
-  type: 'success' | 'error' | 'warning' | 'info' = 'success';
-  title = '';
-  message = '';
+
+  show_alert = signal(false);
+  type = signal<'success' | 'error' | 'warning' | 'info'>('success');
+  title = signal('');
+  message = signal('');
   private timer: any;
 
- show(type: 'success' | 'error' | 'warning' | 'info', message: string, title?: string) {
-  clearTimeout(this.timer);
+  show(type: 'success' | 'error' | 'warning' | 'info', message: string, title?: string) {
+    clearTimeout(this.timer);
+    this.show_alert.set(false);
 
-  // 🔥 FORCE RESET FIRST
-  this.show_alert = false;
+    setTimeout(() => {
+      const defaultTitles = {
+        success: 'Success',
+        error: 'Error',
+        warning: 'Warning',
+        info: 'Info'
+      };
 
-  setTimeout(() => {
-    const defaultTitles = {
-      success: 'Success',
-      error: 'Error',
-      warning: 'Warning',
-      info: 'Info'
-    };
+      this.type.set(type);
+      this.message.set(message);
+      this.title.set(title || defaultTitles[type]);
+      this.show_alert.set(true);
 
-    this.type = type;
-    this.message = message;
-    this.title = title || defaultTitles[type];
-    this.show_alert = true;
-
-    this.timer = setTimeout(() => this.dismiss(), 4000);
-  }, 50); 
-}
+      this.timer = setTimeout(() => this.dismiss(), 4000);
+    }, 50);
+  }
 
   dismiss() {
-    this.show_alert = false;
+    this.show_alert.set(false);
   }
 }

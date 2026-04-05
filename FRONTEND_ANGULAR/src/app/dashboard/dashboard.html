@@ -1,3 +1,18 @@
+<!-- ======= ALERT TOAST ======= -->
+<div class="alert-toast" *ngIf="alertService.show_alert() && alertService.message()" [ngClass]="alertService.type()">
+  <div class="alert-icon">
+    <span *ngIf="alertService.type() === 'success'">✔</span>
+    <span *ngIf="alertService.type() === 'error'">✕</span>
+    <span *ngIf="alertService.type() === 'warning'">⚠</span>
+    <span *ngIf="alertService.type() === 'info'">ℹ</span>
+  </div>
+  <div class="alert-body">
+    <strong>{{ alertService.title() }}</strong>
+    <p>{{ alertService.message() }}</p>
+  </div>
+  <button class="alert-close" (click)="dismissAlert()">✕</button>
+</div>
+
 <!-- ======= USER DASHBOARD LAYOUT ======= -->
 <div class="dashboard-root">
 
@@ -8,12 +23,12 @@
     <div class="sidebar-logo">
       <div class="logo-emblem">
         <svg width="32" height="32" viewBox="0 0 42 42" fill="none">
-          <circle cx="21" cy="21" r="20" stroke="#C9A84C" stroke-width="1.5"/>
-          <path d="M21 3 L28 14 L21 11 L14 14 Z" fill="#C9A84C"/>
-          <path d="M39 21 L28 28 L31 21 L28 14 Z" fill="#C9A84C"/>
-          <path d="M21 39 L14 28 L21 31 L28 28 Z" fill="#C9A84C"/>
-          <path d="M3 21 L14 14 L11 21 L14 28 Z" fill="#C9A84C"/>
-          <circle cx="21" cy="21" r="2" fill="#C9A84C"/>
+          <circle cx="21" cy="21" r="20" stroke="#C9A84C" stroke-width="1.5" />
+          <path d="M21 3 L28 14 L21 11 L14 14 Z" fill="#C9A84C" />
+          <path d="M39 21 L28 28 L31 21 L28 14 Z" fill="#C9A84C" />
+          <path d="M21 39 L14 28 L21 31 L28 28 Z" fill="#C9A84C" />
+          <path d="M3 21 L14 14 L11 21 L14 28 Z" fill="#C9A84C" />
+          <circle cx="21" cy="21" r="2" fill="#C9A84C" />
         </svg>
       </div>
       <div class="logo-text" *ngIf="!sidebarCollapsed">
@@ -22,8 +37,8 @@
       </div>
       <button class="collapse-btn" (click)="toggleSidebar()">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polyline *ngIf="!sidebarCollapsed" points="15 18 9 12 15 6"/>
-          <polyline *ngIf="sidebarCollapsed" points="9 18 15 12 9 6"/>
+          <polyline *ngIf="!sidebarCollapsed" points="15 18 9 12 15 6" />
+          <polyline *ngIf="sidebarCollapsed" points="9 18 15 12 9 6" />
         </svg>
       </button>
     </div>
@@ -36,10 +51,12 @@
       </div>
       <div class="profile-info">
         <span class="profile-name">{{ userName }}</span>
-        <span class="profile-tier">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="#C9A84C"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <!-- <span class="profile-tier">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="#C9A84C">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+          </svg>
           Gold Member
-        </span>
+        </span> -->
       </div>
     </div>
 
@@ -55,77 +72,94 @@
     <nav class="sidebar-nav">
       <p class="nav-section-label" *ngIf="!sidebarCollapsed">Main Menu</p>
 
-      <button class="nav-item" [class.active]="activeSection === 'dashboard'" (click)="setSection('dashboard')" [title]="sidebarCollapsed ? 'Dashboard' : ''">
+      <button class="nav-item" [class.active]="activeSection === 'dashboard'" (click)="setSection('dashboard')"
+        [title]="sidebarCollapsed ? 'Dashboard' : ''">
         <div class="nav-icon">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
-            <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
           </svg>
         </div>
         <span class="nav-label" *ngIf="!sidebarCollapsed">Dashboard</span>
         <div class="nav-active-bar" *ngIf="activeSection === 'dashboard'"></div>
       </button>
 
-      <button class="nav-item" [class.active]="activeSection === 'bookings'" (click)="setSection('bookings')" [title]="sidebarCollapsed ? 'My Bookings' : ''">
+      <button class="nav-item" [class.active]="activeSection === 'bookings'" (click)="setSection('bookings')"
+        [title]="sidebarCollapsed ? 'My Bookings' : ''">
         <div class="nav-icon">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-            <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
-            <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+            <rect x="3" y="4" width="18" height="18" rx="2" />
+            <line x1="16" y1="2" x2="16" y2="6" />
+            <line x1="8" y1="2" x2="8" y2="6" />
+            <line x1="3" y1="10" x2="21" y2="10" />
           </svg>
         </div>
         <span class="nav-label" *ngIf="!sidebarCollapsed">My Bookings</span>
-        <span class="nav-badge" *ngIf="!sidebarCollapsed">2</span>
+        <span class="nav-badge" *ngIf="!sidebarCollapsed">{{totalBookings}}</span>
         <div class="nav-active-bar" *ngIf="activeSection === 'bookings'"></div>
       </button>
 
-      <button class="nav-item" [class.active]="activeSection === 'rooms'" (click)="setSection('rooms')" [title]="sidebarCollapsed ? 'Browse Rooms' : ''">
+      <button class="nav-item" [class.active]="activeSection === 'rooms'" (click)="setSection('rooms')"
+        [title]="sidebarCollapsed ? 'Browse Rooms' : ''">
         <div class="nav-icon">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-            <polyline points="9 22 9 12 15 12 15 22"/>
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+            <polyline points="9 22 9 12 15 12 15 22" />
           </svg>
         </div>
         <span class="nav-label" *ngIf="!sidebarCollapsed">Browse Rooms</span>
         <div class="nav-active-bar" *ngIf="activeSection === 'rooms'"></div>
       </button>
 
-      <button class="nav-item" [class.active]="activeSection === 'services'" (click)="setSection('services')" [title]="sidebarCollapsed ? 'Hotel Services' : ''">
+      <button class="nav-item" [class.active]="activeSection === 'services'" (click)="setSection('services')"
+        [title]="sidebarCollapsed ? 'Hotel Services' : ''">
         <div class="nav-icon">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-            <circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 19.07l-1.41-1.41"/>
+            <circle cx="12" cy="12" r="3" />
+            <path
+              d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 19.07l-1.41-1.41" />
           </svg>
         </div>
         <span class="nav-label" *ngIf="!sidebarCollapsed">Hotel Services</span>
         <div class="nav-active-bar" *ngIf="activeSection === 'services'"></div>
       </button>
 
-      <button class="nav-item" [class.active]="activeSection === 'history'" (click)="setSection('history')" [title]="sidebarCollapsed ? 'Stay History' : ''">
+      <!-- <button class="nav-item" [class.active]="activeSection === 'history'" (click)="setSection('history')"
+        [title]="sidebarCollapsed ? 'Stay History' : ''">
         <div class="nav-icon">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+            <circle cx="12" cy="12" r="10" />
+            <polyline points="12 6 12 12 16 14" />
           </svg>
         </div>
         <span class="nav-label" *ngIf="!sidebarCollapsed">Stay History</span>
         <div class="nav-active-bar" *ngIf="activeSection === 'history'"></div>
-      </button>
+      </button> -->
 
       <div class="sidebar-divider" style="margin: 0.8rem 0;"></div>
       <p class="nav-section-label" *ngIf="!sidebarCollapsed">Account</p>
 
-      <button class="nav-item" [class.active]="activeSection === 'profile'" (click)="setSection('profile')" [title]="sidebarCollapsed ? 'My Profile' : ''">
+      <button class="nav-item" [class.active]="activeSection === 'profile'" (click)="setSection('profile')"
+        [title]="sidebarCollapsed ? 'My Profile' : ''">
         <div class="nav-icon">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
           </svg>
         </div>
         <span class="nav-label" *ngIf="!sidebarCollapsed">My Profile</span>
         <div class="nav-active-bar" *ngIf="activeSection === 'profile'"></div>
       </button>
 
-      <button class="nav-item" [class.active]="activeSection === 'settings'" (click)="setSection('settings')" [title]="sidebarCollapsed ? 'Settings' : ''">
+      <button class="nav-item" [class.active]="activeSection === 'settings'" (click)="setSection('settings')"
+        [title]="sidebarCollapsed ? 'Settings' : ''">
         <div class="nav-icon">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-            <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            <circle cx="12" cy="12" r="3" />
+            <path
+              d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
           </svg>
         </div>
         <span class="nav-label" *ngIf="!sidebarCollapsed">Settings</span>
@@ -137,8 +171,9 @@
     <div class="sidebar-footer">
       <button class="logout-btn" (click)="logout()" [title]="sidebarCollapsed ? 'Logout' : ''">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-          <polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+          <polyline points="16 17 21 12 16 7" />
+          <line x1="21" y1="12" x2="9" y2="12" />
         </svg>
         <span *ngIf="!sidebarCollapsed">Logout</span>
       </button>
@@ -157,31 +192,41 @@
       <div class="topbar-right">
         <div class="topbar-date">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
-            <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+            <rect x="3" y="4" width="18" height="18" rx="2" />
+            <line x1="16" y1="2" x2="16" y2="6" />
+            <line x1="8" y1="2" x2="8" y2="6" />
+            <line x1="3" y1="10" x2="21" y2="10" />
           </svg>
           {{ today | date:'EEEE, MMMM d, y' }}
         </div>
 
-         <!-- ← ADD THIS THEME TOGGLE -->
-  <button class="theme-toggle" (click)="toggleTheme()" [title]="isDarkTheme ? 'Switch to Light' : 'Switch to Dark'">
-    <!-- Moon icon (shown in dark mode) -->
-    <svg *ngIf="isDarkTheme" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-    </svg>
-    <!-- Sun icon (shown in light mode) -->
-    <svg *ngIf="!isDarkTheme" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-      <circle cx="12" cy="12" r="5"/>
-      <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
-      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-      <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
-      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-    </svg>
-  </button>
+        <!-- ← ADD THIS THEME TOGGLE -->
+        <button class="theme-toggle" (click)="toggleTheme()"
+          [title]="isDarkTheme ? 'Switch to Light' : 'Switch to Dark'">
+          <!-- Moon icon (shown in dark mode) -->
+          <svg *ngIf="isDarkTheme" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.8">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+          </svg>
+          <!-- Sun icon (shown in light mode) -->
+          <svg *ngIf="!isDarkTheme" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.8">
+            <circle cx="12" cy="12" r="5" />
+            <line x1="12" y1="1" x2="12" y2="3" />
+            <line x1="12" y1="21" x2="12" y2="23" />
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+            <line x1="1" y1="12" x2="3" y2="12" />
+            <line x1="21" y1="12" x2="23" y2="12" />
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+          </svg>
+        </button>
 
         <div class="topbar-notif">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
           </svg>
           <span class="notif-dot"></span>
         </div>
@@ -195,12 +240,16 @@
       <!-- Welcome Banner -->
       <div class="welcome-banner">
         <div class="welcome-text">
-          <p class="welcome-eyebrow">Good {{ getTimeOfDay() }}</p>
+          <p class="welcome-eyebrow"> {{ greeting }}</p>
           <h2 class="welcome-name">{{ userName }} <span>👋</span></h2>
-          <p class="welcome-sub">You have <strong>2 upcoming stays</strong> and <strong>1 pending request</strong>. Have a wonderful day!</p>
+          <p class="welcome-sub">You have <strong>{{totalUpcomingBookings}}</strong> upcoming stays. Have
+            a wonderful day!</p>
         </div>
         <div class="welcome-visual">
-          <div class="welcome-icon">🏨</div>
+          <!-- <div class="welcome-icon">🏨</div> -->
+          <div class="welcome-icon">
+            <img src="services/dashboard.jpeg" alt="Luxury Hotel">
+          </div>
         </div>
       </div>
 
@@ -209,12 +258,14 @@
         <div class="stat-card">
           <div class="stat-icon gold-bg">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2">
-              <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
-              <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+              <rect x="3" y="4" width="18" height="18" rx="2" />
+              <line x1="16" y1="2" x2="16" y2="6" />
+              <line x1="8" y1="2" x2="8" y2="6" />
+              <line x1="3" y1="10" x2="21" y2="10" />
             </svg>
           </div>
           <div class="stat-info">
-            <span class="stat-value">2</span>
+            <span class="stat-value">{{ totalUpcomingBookings }}</span>
             <span class="stat-label">Upcoming Stays</span>
           </div>
           <div class="stat-trend up">↑ Active</div>
@@ -222,11 +273,12 @@
         <div class="stat-card">
           <div class="stat-icon green-bg">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#97C459" stroke-width="2">
-              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+              <polyline points="22 4 12 14.01 9 11.01" />
             </svg>
           </div>
           <div class="stat-info">
-            <span class="stat-value">7</span>
+            <span class="stat-value">{{ totalCompletedBookings }}</span>
             <span class="stat-label">Completed Stays</span>
           </div>
           <div class="stat-trend neutral">All time</div>
@@ -234,27 +286,28 @@
         <div class="stat-card">
           <div class="stat-icon blue-bg">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#85B7EB" stroke-width="2">
-              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 16 14" />
             </svg>
           </div>
           <div class="stat-info">
-            <span class="stat-value">24</span>
+            <span class="stat-value">{{ totalnights }}</span>
             <span class="stat-label">Nights Stayed</span>
           </div>
           <div class="stat-trend up">↑ Loyal Guest</div>
         </div>
-        <div class="stat-card">
+        <!-- <div class="stat-card">
           <div class="stat-icon amber-bg">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FAC775" stroke-width="2">
-              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
             </svg>
-          </div>
-          <div class="stat-info">
+          </div> -->
+        <!-- <div class="stat-info">
             <span class="stat-value">1,240</span>
             <span class="stat-label">Reward Points</span>
-          </div>
-          <div class="stat-trend up">↑ Gold Tier</div>
-        </div>
+          </div> -->
+        <!-- <div class="stat-trend up">↑ Gold Tier</div> -->
+        <!-- </div> -->
       </div>
 
       <!-- Upcoming Booking + Quick Actions -->
@@ -266,50 +319,86 @@
             <h3>Upcoming Stay</h3>
             <button class="card-link" (click)="setSection('bookings')">View all →</button>
           </div>
-          <div class="booking-preview">
+          <div class="bookings-list">
+            <div class="booking-card" *ngFor="let b of upcomingBookings">
+              <div class="bc-left">
+                <div class="bc-room-icon">
+                  <img [src]="b.image" />
+                </div>
+                <!-- <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80" width="100"> -->
+                <div class="bc-info">
+                  <span class="bc-room">{{ b.room }}</span>
+                  <span class="bc-dates">{{ b.dates }}</span>
+                  <span class="bc-guests">{{ b.guests }}</span>
+                </div>
+              </div>
+              <div class="bc-mid">
+                <span class="bc-nights">{{ b.nights }} nights</span>
+                <span class="bc-price">{{ b.price }}</span>
+              </div>
+              <div class="bc-right">
+                <span class="booking-status" [ngClass]="b.status.toLowerCase()">{{ b.status }}</span>
+                <div class="bc-actions">
+                  <!-- <button class="bc-btn view">View</button> -->
+                  <!-- <button class="bc-btn cancel" *ngIf="b.status === 'CONFIRMED' || b.status === 'PENDING'">
+                    Cancel
+                  </button> -->
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="booking-preview">
             <div class="booking-room-icon">🛏️</div>
             <div class="booking-details">
               <span class="booking-room-name">Grand Deluxe Suite</span>
               <span class="booking-dates">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/>
+                  <rect x="3" y="4" width="18" height="18" rx="2" />
+                  <line x1="3" y1="10" x2="21" y2="10" />
                 </svg>
                 Dec 24 – Dec 28, 2025
               </span>
               <span class="booking-guests">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
-                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                 </svg>
                 2 Guests · 4 Nights
               </span>
             </div>
             <div class="booking-status confirmed">Confirmed</div>
-          </div>
-          <div class="booking-preview" style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(201,168,76,0.1);">
+          </div> -->
+          <!-- <div class="booking-preview"
+            style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(201,168,76,0.1);">
             <div class="booking-room-icon">👑</div>
             <div class="booking-details">
               <span class="booking-room-name">Presidential Suite</span>
               <span class="booking-dates">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/>
+                  <rect x="3" y="4" width="18" height="18" rx="2" />
+                  <line x1="3" y1="10" x2="21" y2="10" />
                 </svg>
                 Jan 10 – Jan 14, 2026
               </span>
               <span class="booking-guests">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
                 </svg>
                 1 Guest · 4 Nights
               </span>
             </div>
             <div class="booking-status pending">Pending</div>
-          </div>
+          </div> -->
         </div>
 
         <!-- Quick Actions -->
         <div class="dash-card quick-actions-card">
-          <div class="card-header"><h3>Quick Actions</h3></div>
+          <div class="card-header">
+            <h3>Quick Actions</h3>
+          </div>
           <div class="quick-actions-grid">
             <button class="quick-action" (click)="setSection('rooms')">
               <div class="qa-icon">🛏️</div>
@@ -319,18 +408,18 @@
               <div class="qa-icon">🍽️</div>
               <span>Room Service</span>
             </button>
-            <button class="quick-action" (click)="setSection('services')">
+            <!-- <button class="quick-action" (click)="setSection('services')">
               <div class="qa-icon">💆</div>
               <span>Book Spa</span>
-            </button>
+            </button> -->
             <button class="quick-action" (click)="setSection('bookings')">
               <div class="qa-icon">📋</div>
               <span>My Bookings</span>
             </button>
-            <button class="quick-action" (click)="setSection('history')">
+            <!-- <button class="quick-action" (click)="setSection('history')">
               <div class="qa-icon">🕐</div>
               <span>Stay History</span>
-            </button>
+            </button> -->
             <button class="quick-action" (click)="setSection('profile')">
               <div class="qa-icon">👤</div>
               <span>Edit Profile</span>
@@ -341,12 +430,12 @@
       </div>
 
       <!-- Loyalty Progress -->
-      <div class="dash-card loyalty-card">
-        <div class="card-header">
+      <!-- <div class="dash-card loyalty-card"> -->
+      <!-- <div class="card-header">
           <h3>Loyalty Status</h3>
           <span class="loyalty-tier gold-tier">⭐ Gold Member</span>
-        </div>
-        <div class="loyalty-bar-wrap">
+        </div> -->
+      <!-- <div class="loyalty-bar-wrap">
           <div class="loyalty-labels">
             <span>Gold (1,240 pts)</span>
             <span>Platinum at 2,000 pts</span>
@@ -355,39 +444,148 @@
             <div class="loyalty-fill" style="width: 62%"></div>
           </div>
           <p class="loyalty-hint">760 more points to reach <strong>Platinum</strong> status</p>
-        </div>
-      </div>
+        </div> -->
+      <!-- </div> -->
 
     </div>
 
     <!-- ========== MY BOOKINGS SECTION ========== -->
-    <div class="section-content" *ngIf="activeSection === 'bookings'" [@fadeIn]>
+    <div class="section-content" *ngIf="activeSection === 'bookings'">
       <div class="bookings-filters">
-        <button class="filter-btn active">All (4)</button>
-        <button class="filter-btn">Upcoming</button>
-        <button class="filter-btn">Completed</button>
-        <button class="filter-btn">Cancelled</button>
+
+        <button class="filter-btn" [class.active]="activeFilter === 'ALL'" (click)="setFilter('ALL')">
+          All
+        </button>
+
+        <button class="filter-btn" [class.active]="activeFilter === 'UPCOMING'" (click)="setFilter('UPCOMING')">
+          Upcoming
+        </button>
+
+        <button class="filter-btn" [class.active]="activeFilter === 'COMPLETED'" (click)="setFilter('COMPLETED')">
+          Completed
+        </button>
+
+        <button class="filter-btn" [class.active]="activeFilter === 'ONGOING'" (click)="setFilter('ONGOING')">
+          Ongoing
+        </button>
+
+        <!-- <button class="filter-btn" [class.active]="activeFilter === 'CANCELLED'" (click)="setFilter('CANCELLED')">
+          Cancelled
+        </button> -->
+
+      </div>
+
+      <div class="bookings-listFilter">
+        <div *ngIf="activeFilter === 'UPCOMING'">
+          <div class="booking-card" *ngFor="let b of upcomingBookings">
+            <div class="bc-left">
+              <div class="bc-room-icon">
+                <img [src]="b.image" />
+              </div>
+              <!-- <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80" width="100"> -->
+              <div class="bc-info">
+                <span class="bc-room">{{ b.room }}</span>
+                <span class="bc-dates">{{ b.dates }}</span>
+                <span class="bc-guests">{{ b.guests }}</span>
+              </div>
+            </div>
+            <div class="bc-mid">
+              <span class="bc-nights">{{ b.nights }} nights</span>
+              <span class="bc-price">{{ b.price }}</span>
+            </div>
+            <div class="bc-right">
+              <span class="booking-status" [ngClass]="b.status.toLowerCase()">{{ b.status }}</span>
+              <div class="bc-actions">
+                <!-- <button class="bc-btn view">View</button> -->
+                <!-- <button class="bc-btn cancel">Cancel</button> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bookings-list">
+        <div *ngIf="activeFilter==='ALL'">
+          <div class="booking-card" *ngFor="let b of allBookings">
+            <div class="bc-left">
+              <div class="bc-room-icon">
+                <img [src]="b.image" />
+              </div>
+              <!-- <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80" width="100"> -->
+              <div class="bc-info">
+                <span class="bc-room">{{ b.room }}</span>
+                <span class="bc-dates">{{ b.dates }}</span>
+                <span class="bc-guests">{{ b.guests }}</span>
+              </div>
+            </div>
+            <div class="bc-mid">
+              <span class="bc-nights">{{ b.nights }} nights</span>
+              <span class="bc-price">{{ b.price }}</span>
+            </div>
+            <div class="bc-right">
+              <span class="booking-status" [ngClass]="b.status.toLowerCase()">{{ b.status }}</span>
+              <div class="bc-actions">
+                <!-- <button class="bc-btn view">View</button> -->
+                <!-- <button class="bc-btn cancel" *ngIf="b.status === 'CONFIRMED' || b.status === 'PENDING'">
+                  Cancel
+                </button> -->
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="bookings-list">
-        <div class="booking-card" *ngFor="let b of bookings">
-          <div class="bc-left">
-            <div class="bc-room-icon">{{ b.icon }}</div>
-            <div class="bc-info">
-              <span class="bc-room">{{ b.room }}</span>
-              <span class="bc-dates">{{ b.dates }}</span>
-              <span class="bc-guests">{{ b.guests }}</span>
+        <div *ngIf="activeFilter==='COMPLETED'">
+          <div class="booking-card" *ngFor="let b of completedBookings">
+            <div class="bc-left">
+              <div class="bc-room-icon">
+                <img [src]="b.image" />
+              </div>
+              <!-- <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80" width="100"> -->
+              <div class="bc-info">
+                <span class="bc-room">{{ b.room }}</span>
+                <span class="bc-dates">{{ b.dates }}</span>
+                <span class="bc-guests">{{ b.guests }}</span>
+              </div>
+            </div>
+            <div class="bc-mid">
+              <span class="bc-nights">{{ b.nights }} nights</span>
+              <span class="bc-price">{{ b.price }}</span>
+            </div>
+            <div class="bc-right">
+              <span class="booking-status" [ngClass]="b.status.toLowerCase()">{{ b.status }}</span>
+              <div class="bc-actions">
+                <!-- <button class="bc-btn view">View</button> -->
+                <!-- <button class="bc-btn cancel" *ngIf="b.status !== 'COMPLETED'">Cancel</button> -->
+              </div>
             </div>
           </div>
-          <div class="bc-mid">
-            <span class="bc-nights">{{ b.nights }} nights</span>
-            <span class="bc-price">{{ b.price }}</span>
-          </div>
-          <div class="bc-right">
-            <span class="booking-status" [ngClass]="b.status.toLowerCase()">{{ b.status }}</span>
-            <div class="bc-actions">
-              <button class="bc-btn view">View</button>
-              <button class="bc-btn cancel" *ngIf="b.status === 'Confirmed' || b.status === 'Pending'">Cancel</button>
+        </div>
+      </div>
+      <div class="bookings-list">
+        <div *ngIf="activeFilter==='ONGOING'">
+          <div class="booking-card" *ngFor="let b of ongoingBookings">
+            <div class="bc-left">
+              <div class="bc-room-icon">
+                <img [src]="b.image" />
+              </div>
+              <!-- <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80" width="100"> -->
+              <div class="bc-info">
+                <span class="bc-room">{{ b.room }}</span>
+                <span class="bc-dates">{{ b.dates }}</span>
+                <span class="bc-guests">{{ b.guests }}</span>
+              </div>
+            </div>
+            <div class="bc-mid">
+              <span class="bc-nights">{{ b.nights }} nights</span>
+              <span class="bc-price">{{ b.price }}</span>
+            </div>
+            <div class="bc-right">
+              <span class="booking-status" [ngClass]="b.status.toLowerCase()">{{ b.status }}</span>
+              <div class="bc-actions">
+                <!-- <button class="bc-btn view">View</button> -->
+                <!-- <button class="bc-btn cancel" *ngIf="b.status !== 'COMPLETED'">Cancel</button> -->
+              </div>
             </div>
           </div>
         </div>
@@ -396,36 +594,44 @@
 
     <!-- ========== BROWSE ROOMS SECTION ========== -->
     <div class="section-content" *ngIf="activeSection === 'rooms'" [@fadeIn]>
-      <div class="rooms-search-bar">
+      <!-- <div class="rooms-search-bar">
         <div class="search-field">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2">
-            <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/>
+            <rect x="3" y="4" width="18" height="18" rx="2" />
+            <line x1="3" y1="10" x2="21" y2="10" />
           </svg>
           <input type="date" placeholder="Check In" />
         </div>
         <div class="search-field">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2">
-            <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/>
+            <rect x="3" y="4" width="18" height="18" rx="2" />
+            <line x1="3" y1="10" x2="21" y2="10" />
           </svg>
           <input type="date" placeholder="Check Out" />
         </div>
         <div class="search-field">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2">
-            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
           </svg>
-          <select><option>1 Guest</option><option>2 Guests</option><option>3 Guests</option><option>4+</option></select>
+          <select>
+            <option>1 Guest</option>
+            <option>2 Guests</option>
+            <option>3 Guests</option>
+            <option>4+</option>
+          </select>
         </div>
         <button class="search-btn">Search</button>
-      </div>
+      </div> -->
 
       <div class="rooms-grid-dash">
         <div class="room-dash-card" *ngFor="let r of rooms">
           <!-- <div class="rdc-image">{{ r.icon }}</div> -->
-           <div class="rdc-image">
-  <img [src]="r.image" [alt]="r.name" />
-  <div class="rdc-image-overlay"></div>
-  <span class="rdc-img-badge">{{ r.type }}</span>
-</div>
+          <div class="rdc-image">
+            <img [src]="r.image" [alt]="r.name" />
+            <div class="rdc-image-overlay"></div>
+            <span class="rdc-img-badge">{{ r.type }}</span>
+          </div>
           <div class="rdc-info">
             <div class="rdc-meta">
               <span class="rdc-type">{{ r.type }}</span>
@@ -442,7 +648,7 @@
                 <span class="amount">{{ r.price }}</span>
                 <span class="per">/night</span>
               </div>
-              <button class="rdc-book-btn">Book Now</button>
+              <button class="rdc-book-btn" (click)="openBookingModal(r)">Book Now</button>
             </div>
           </div>
         </div>
@@ -453,11 +659,42 @@
     <div class="section-content" *ngIf="activeSection === 'services'" [@fadeIn]>
       <div class="services-grid">
         <div class="service-card" *ngFor="let s of services">
-          <div class="service-icon-wrap">{{ s.icon }}</div>
+          <!-- <div class="service-icon-wrap">{{ s.icon }}</div> -->
+          <div class="service-icon-wrap">
+            <img [src]="s.image" alt="{{ s.name }}">
+          </div>
           <h4 class="service-name">{{ s.name }}</h4>
           <p class="service-desc">{{ s.desc }}</p>
-          <button class="service-btn">{{ s.action }}</button>
+          <!-- <button class="service-btn">{{ s.action }}</button> -->
+          <button class="service-btn" (click)="openModal(s)">
+            {{ s.action }}
+          </button>
         </div>
+      </div>
+    </div>
+
+    <div class="bk-backdrop" [class.active]="isModalOpen" (click)="closeModal()">
+
+      <div class="bk-modal" (click)="$event.stopPropagation()">
+
+        <!-- Close Button -->
+        <span class="close-btn" (click)="closeModal()">✖</span>
+
+        <!-- Image -->
+        <img [src]="selectedService?.image" class="modal-img" />
+
+        <!-- Content -->
+        <div class="modal-content">
+          <h2>{{ selectedService?.name }}</h2>
+          <p>{{ selectedService?.desc }}</p>
+
+          <ul>
+            <li *ngFor="let d of selectedService?.details">
+              {{ d }}
+            </li>
+          </ul>
+        </div>
+
       </div>
     </div>
 
@@ -485,15 +722,15 @@
     </div>
 
     <!-- ========== PROFILE SECTION ========== -->
-    <div class="section-content" *ngIf="activeSection === 'profile'" [@fadeIn]>
+    <div class="section-content" *ngIf="activeSection === 'profile'">
       <div class="profile-layout">
         <div class="profile-card-big">
           <div class="profile-avatar-big">{{ getUserInitials() }}</div>
           <h3 class="profile-full-name">{{ userName }}</h3>
           <p class="profile-email">{{ userEmail }}</p>
-          <span class="profile-badge">⭐ Gold Member · 1,240 pts</span>
+          <!-- <span class="profile-badge">⭐ Gold Member · 1,240 pts</span> -->
           <div class="profile-stats-row">
-            <div class="ps">
+            <!-- <div class="ps">
               <span class="ps-val">7</span>
               <span class="ps-lbl">Stays</span>
             </div>
@@ -503,43 +740,52 @@
             </div>
             <div class="ps">
               <span class="ps-val">4.9</span>
-              <span class="ps-lbl">Rating</span>
-            </div>
+              <span class="ps-lbl">Rating</span> -->
+            <!-- </div> -->
           </div>
         </div>
         <div class="profile-form-card">
-          <div class="card-header"><h3>Edit Profile</h3></div>
-          <div class="profile-form">
-            <div class="pf-group">
-              <label>Full Name</label>
-              <input type="text" [value]="userName" />
-            </div>
-            <div class="pf-group">
-              <label>Email Address</label>
-              <input type="email" [value]="userEmail" />
-            </div>
-            <div class="pf-group">
-              <label>Mobile Number</label>
-              <input type="tel" value="+91 98765 43210" />
-            </div>
-            <div class="pf-group">
-              <label>Date of Birth</label>
-              <input type="date" />
-            </div>
-            <div class="pf-group">
-              <label>Nationality</label>
-              <input type="text" value="Indian" />
-            </div>
-            <div class="pf-group">
-              <label>Preferred Room Type</label>
-              <select>
-                <option>Deluxe Room</option>
-                <option>Executive Suite</option>
-                <option>Presidential Suite</option>
-              </select>
-            </div>
-            <button class="save-btn">Save Changes</button>
+          <div class="card-header">
+            <h3>Edit Profile</h3>
           </div>
+          <form #profileForm="ngForm">
+            <div class="profile-form">
+              <div class="pf-group">
+                <label>Full Name</label>
+                <input type="text" [(ngModel)]="userName" name="userName" required #userNameRef="ngModel" />
+                <div *ngIf="userNameRef.invalid && userNameRef.touched" style="color:red">
+                  Name is required
+                </div>
+              </div>
+              <div class="pf-group">
+                <label>Email Address</label>
+                <input type="email" [(ngModel)]="userEmail" name="userEmail" readonly />
+              </div>
+              <div class="pf-group">
+                <label>Mobile Number</label>
+                <input type="tel" [(ngModel)]="mobile" name="mobile" maxlength="10" pattern="[0-9]{10}"
+                  inputmode="numeric" />
+              </div>
+              <div class="pf-group">
+                <label>Date of Birth</label>
+                <input type="date" [(ngModel)]="dateOfBirth" name="dateOfBirth" />
+              </div>
+              <div class="pf-group">
+                <label>Nationality</label>
+                <input type="text" [(ngModel)]="nationality" name="nationality" />
+              </div>
+              <div class="pf-group">
+                <label>Preferred Room Type</label>
+                <select [(ngModel)]="selectedRoom" name="roomType">
+                  <option value="Deluxe Room">Deluxe Room</option>
+                  <option value="Executive Suite">Executive Suite</option>
+                  <option value="Presidential Suite">Presidential Suite</option>
+                </select>
+              </div>
+              <button class="save-btn" (click)="saveProfileChanges(profileForm)">
+                Save Changes</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -555,33 +801,34 @@
               <span class="sr-desc">{{ s.desc }}</span>
             </div>
             <label class="toggle-switch">
-              <input type="checkbox" [checked]="s.on" />
+              <!-- <input type="checkbox" [checked]="s.on" /> -->
+              <input type="checkbox" [(ngModel)]="s.on" (change)="saveSettings()" />
               <span class="toggle-track"><span class="toggle-thumb"></span></span>
             </label>
           </div>
         </div>
         <div class="settings-group">
           <h4 class="settings-group-title">Security</h4>
-          <div class="settings-row">
+          <!-- <div class="settings-row">
             <div class="sr-info">
               <span class="sr-label">Change Password</span>
               <span class="sr-desc">Update your account password</span>
             </div>
             <button class="settings-btn">Update</button>
-          </div>
-          <div class="settings-row">
+          </div> -->
+          <!-- <div class="settings-row">
             <div class="sr-info">
               <span class="sr-label">Two-Factor Authentication</span>
               <span class="sr-desc">Add an extra layer of security</span>
             </div>
             <button class="settings-btn">Enable</button>
-          </div>
+          </div> -->
           <div class="settings-row danger-row">
             <div class="sr-info">
               <span class="sr-label">Delete Account</span>
               <span class="sr-desc">Permanently remove your data</span>
             </div>
-            <button class="settings-btn danger-btn">Delete</button>
+            <button class="settings-btn danger-btn" (click)="deleteAccount()">Delete</button>
           </div>
         </div>
       </div>
@@ -589,3 +836,396 @@
 
   </main>
 </div>
+<!-- ======================================================
+     BOOKING MODAL — paste this just before closing </div>
+     of .dashboard-root in user-dashboard.component.html
+     ====================================================== -->
+
+<div class="bk-backdrop" [class.active]="showBookingModal" (click)="closeBookingModal()">
+  <div class="bk-modal" (click)="$event.stopPropagation()">
+
+    <!-- ── MODAL HEADER ── -->
+    <div class="bk-header">
+      <div class="bk-header-left">
+        <div class="bk-room-thumb">
+          <img [src]="selectedRoom?.image" [alt]="selectedRoom?.name" />
+        </div>
+        <div>
+          <p class="bk-room-type">{{ selectedRoom?.type }}</p>
+          <h2 class="bk-room-name">{{ selectedRoom?.name }}</h2>
+          <p class="bk-room-price">{{ selectedRoom?.price }} <span>/night</span></p>
+        </div>
+      </div>
+      <button class="bk-close" (click)="closeBookingModal()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- ── STEP INDICATOR ── -->
+    <div class="bk-steps">
+      <div class="bk-step" [class.active]="bookingStep >= 1" [class.done]="bookingStep > 1">
+        <div class="step-circle">
+          <svg *ngIf="bookingStep > 1" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.5">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+          <span *ngIf="bookingStep <= 1">1</span>
+        </div>
+        <span class="step-label">Stay Details</span>
+      </div>
+      <div class="step-line" [class.done]="bookingStep > 1"></div>
+      <div class="bk-step" [class.active]="bookingStep >= 2" [class.done]="bookingStep > 2">
+        <div class="step-circle">
+          <svg *ngIf="bookingStep > 2" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.5">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+          <span *ngIf="bookingStep <= 2">2</span>
+        </div>
+        <span class="step-label">Guest Details</span>
+      </div>
+      <div class="step-line" [class.done]="bookingStep > 2"></div>
+      <div class="bk-step" [class.active]="bookingStep >= 3">
+        <div class="step-circle"><span>3</span></div>
+        <span class="step-label">Payment</span>
+      </div>
+    </div>
+
+    <!-- ── MODAL BODY ── -->
+    <div class="bk-body">
+
+      <!-- ===== STEP 1 — STAY DETAILS ===== -->
+      <div *ngIf="bookingStep === 1" class="bk-step-content">
+        <h3 class="step-title">Select your stay dates & guests</h3>
+
+        <div class="step1-grid">
+          <div class="bk-field">
+            <label>Check-In Date</label>
+            <div class="bk-input-wrap">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2">
+                <rect x="3" y="4" width="18" height="18" rx="2" />
+                <line x1="3" y1="10" x2="21" y2="10" />
+                <line x1="16" y1="2" x2="16" y2="6" />
+                <line x1="8" y1="2" x2="8" y2="6" />
+              </svg>
+              <input type="date" [(ngModel)]="bookingData.checkIn" name="checkIn" (change)="calculateTotal()" />
+            </div>
+          </div>
+          <div class="bk-field">
+            <label>Check-Out Date</label>
+            <div class="bk-input-wrap">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2">
+                <rect x="3" y="4" width="18" height="18" rx="2" />
+                <line x1="3" y1="10" x2="21" y2="10" />
+                <line x1="16" y1="2" x2="16" y2="6" />
+                <line x1="8" y1="2" x2="8" y2="6" />
+              </svg>
+              <input type="date" [(ngModel)]="bookingData.checkOut" name="checkOut" (change)="calculateTotal()" />
+            </div>
+          </div>
+
+          <div class="bk-field">
+            <label>Number of Guests <span class="capacity-hint">(Max: {{ selectedRoom?.capacity }})</span></label>
+            <div class="bk-input-wrap">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+              <select [(ngModel)]="bookingData.guestCount" name="guestCount" (change)="onGuestCountChange()">
+                <option *ngFor="let n of getGuestOptions()" [value]="n">{{ n }} Guest{{ n > 1 ? 's' : '' }}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="bk-field">
+            <label>Special Requests</label>
+            <div class="bk-input-wrap">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+              </svg>
+              <input type="text" [(ngModel)]="bookingData.specialRequest" name="specialRequest"
+                placeholder="e.g. Early check-in, flowers..." />
+            </div>
+          </div>
+        </div>
+
+        <!-- Mini Price Preview -->
+        <div class="price-preview" *ngIf="bookingData.nights > 0">
+          <div class="pp-item">
+            <span>{{ selectedRoom?.price }} × {{ bookingData.nights }} night{{ bookingData.nights > 1 ? 's' : ''
+              }}</span>
+            <span>{{ bookingData.roomTotal | currency:'INR':'symbol':'1.0-0' }}</span>
+          </div>
+          <div class="pp-item">
+            <span>Taxes & Fees (18% GST)</span>
+            <span>{{ bookingData.taxes | currency:'INR':'symbol':'1.0-0' }}</span>
+          </div>
+          <div class="pp-item total">
+            <span>Estimated Total</span>
+            <span>{{ bookingData.grandTotal | currency:'INR':'symbol':'1.0-0' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== STEP 2 — GUEST DETAILS ===== -->
+      <div *ngIf="bookingStep === 2" class="bk-step-content">
+        <h3 class="step-title">Enter details for all guests</h3>
+
+        <div class="guests-table-wrap">
+          <table class="guests-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Full Name</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>ID Type</th>
+                <th>ID Number</th>
+                <th>Nationality</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let guest of bookingData.guests; let i = index">
+                <td>
+                  <div class="guest-num">
+                    {{ i + 1 }}
+                    <span class="primary-tag" *ngIf="i === 0">Primary</span>
+                  </div>
+                </td>
+                <td>
+                  <input class="tbl-input" type="text" [(ngModel)]="guest.name" [name]="'gname_' + i"
+                    placeholder="Full name" />
+                </td>
+                <td>
+                  <input class="tbl-input sm" type="number" [(ngModel)]="guest.age" [name]="'gage_' + i"
+                    placeholder="Age" min="1" max="120" />
+                </td>
+                <td>
+                  <select class="tbl-select" [(ngModel)]="guest.gender" [name]="'gender_' + i">
+                    <option value="">Select</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </td>
+                <td>
+                  <select class="tbl-select" [(ngModel)]="guest.idType" [name]="'idtype_' + i">
+                    <option value="">Select ID</option>
+                    <option value="Aadhaar">Aadhaar Card</option>
+                    <option value="PAN">PAN Card</option>
+                    <option value="Passport">Passport</option>
+                    <option value="Driving">Driving Licence</option>
+                    <option value="Voter">Voter ID</option>
+                  </select>
+                </td>
+                <td>
+                  <input class="tbl-input" type="text" [(ngModel)]="guest.idNumber" [name]="'idnum_' + i"
+                    placeholder="ID number" />
+                </td>
+                <td>
+                  <input class="tbl-input" type="text" [(ngModel)]="guest.nationality" [name]="'nat_' + i"
+                    placeholder="e.g. Indian" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="guest-note">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="16" x2="12" y2="12" />
+            <line x1="12" y1="8" x2="12.01" y2="8" />
+          </svg>
+          Valid government-issued photo ID is mandatory for all guests at check-in as per hotel policy.
+        </p>
+      </div>
+
+      <!-- ===== STEP 3 — PAYMENT ===== -->
+      <div *ngIf="bookingStep === 3" class="bk-step-content">
+        <h3 class="step-title">Review & complete payment</h3>
+
+        <div class="payment-layout">
+
+          <!-- Order Summary -->
+          <div class="order-summary">
+            <div class="os-room">
+              <img [src]="selectedRoom?.image" [alt]="selectedRoom?.name" class="os-room-img" />
+              <div class="os-room-info">
+                <span class="os-room-type">{{ selectedRoom?.type }}</span>
+                <span class="os-room-name">{{ selectedRoom?.name }}</span>
+                <span class="os-dates">{{ bookingData.checkIn | date:'MMM d' }} – {{ bookingData.checkOut | date:'MMM d,
+                  y' }}</span>
+              </div>
+            </div>
+
+            <div class="os-divider"></div>
+
+            <!-- Guest Summary -->
+            <div class="os-guests">
+              <p class="os-section-label">Guests ({{ bookingData.guestCount }})</p>
+              <div class="os-guest-chip" *ngFor="let g of bookingData.guests; let i = index">
+                <div class="os-avatar">{{ getInitials(g.name) }}</div>
+                <div class="os-guest-info">
+                  <span>{{ g.name || 'Guest ' + (i+1) }}</span>
+                  <span class="os-id">{{ g.idType }} · {{ g.idNumber }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="os-divider"></div>
+
+            <!-- Price Breakdown -->
+            <div class="os-price-breakdown">
+              <p class="os-section-label">Price Breakdown</p>
+              <div class="os-price-row">
+                <span>Room Charges</span>
+                <span>{{ bookingData.roomTotal | currency:'INR':'symbol':'1.0-0' }}</span>
+              </div>
+              <div class="os-price-row">
+                <span>{{ selectedRoom?.price }} × {{ bookingData.nights }} night{{ bookingData.nights > 1 ? 's' : ''
+                  }}</span>
+                <span class="muted">per night</span>
+              </div>
+              <div class="os-price-row" *ngIf="bookingData.guestCount > 1">
+                <span>Extra Guest Charges</span>
+                <span>{{ bookingData.extraGuestCharge | currency:'INR':'symbol':'1.0-0' }}</span>
+              </div>
+              <div class="os-price-row">
+                <span>GST (18%)</span>
+                <span>{{ bookingData.taxes | currency:'INR':'symbol':'1.0-0' }}</span>
+              </div>
+              <div class="os-price-row">
+                <span>Grand Horizon Service Fee</span>
+                <span>{{ bookingData.serviceFee | currency:'INR':'symbol':'1.0-0' }}</span>
+              </div>
+              <div class="os-divider"></div>
+              <div class="os-price-row grand-total">
+                <span>Total Amount</span>
+                <span>{{ bookingData.grandTotal | currency:'INR':'symbol':'1.0-0' }}</span>
+              </div>
+              <p class="os-note">Inclusive of all taxes. Amount will be charged at check-in.</p>
+            </div>
+          </div>
+
+          <!-- Payment Method -->
+          <!-- <div class="payment-method-wrap">
+            <p class="os-section-label" style="margin-bottom: 1rem;">Select Payment Method</p>
+
+            <div class="pay-options">
+              <label class="pay-option" [class.selected]="bookingData.paymentMethod === 'card'">
+                <input type="radio" [(ngModel)]="bookingData.paymentMethod" name="payMethod" value="card" />
+                <div class="pay-icon">💳</div>
+                <div>
+                  <span class="pay-name">Credit / Debit Card</span>
+                  <span class="pay-desc">Visa, Mastercard, RuPay</span>
+                </div>
+              </label>
+              <label class="pay-option" [class.selected]="bookingData.paymentMethod === 'upi'">
+                <input type="radio" [(ngModel)]="bookingData.paymentMethod" name="payMethod" value="upi" />
+                <div class="pay-icon">📱</div>
+                <div>
+                  <span class="pay-name">UPI</span>
+                  <span class="pay-desc">GPay, PhonePe, Paytm</span>
+                </div>
+              </label>
+              <label class="pay-option" [class.selected]="bookingData.paymentMethod === 'netbanking'">
+                <input type="radio" [(ngModel)]="bookingData.paymentMethod" name="payMethod" value="netbanking" />
+                <div class="pay-icon">🏦</div>
+                <div>
+                  <span class="pay-name">Net Banking</span>
+                  <span class="pay-desc">All major banks</span>
+                </div>
+              </label> -->
+          <!-- <label class="pay-option" [class.selected]="bookingData.paymentMethod === 'hotel'">
+                <input type="radio" [(ngModel)]="bookingData.paymentMethod" name="payMethod" value="hotel" />
+                <div class="pay-icon">🏨</div>
+                <div>
+                  <span class="pay-name">Pay at Hotel</span>
+                  <span class="pay-desc">Cash or card at check-in</span>
+                </div>
+              </label> -->
+          <!-- </div> -->
+
+          <!-- Card Fields -->
+          <!-- <div class="card-fields" *ngIf="bookingData.paymentMethod === 'card'">
+              <div class="bk-field">
+                <label>Cardholder Name</label>
+                <div class="bk-input-wrap">
+                  <input type="text" [(ngModel)]="bookingData.cardName" name="cardName" placeholder="Name on card" />
+                </div>
+              </div>
+              <div class="bk-field">
+                <label>Card Number</label>
+                <div class="bk-input-wrap">
+                  <input type="text" [(ngModel)]="bookingData.cardNumber" name="cardNumber" placeholder="XXXX XXXX XXXX XXXX" maxlength="19" />
+                </div>
+              </div>
+              <div class="card-row">
+                <div class="bk-field">
+                  <label>Expiry</label>
+                  <div class="bk-input-wrap">
+                    <input type="text" [(ngModel)]="bookingData.cardExpiry" name="cardExpiry" placeholder="MM/YY" maxlength="5" />
+                  </div>
+                </div>
+                <div class="bk-field">
+                  <label>CVV</label>
+                  <div class="bk-input-wrap">
+                    <input type="password" [(ngModel)]="bookingData.cardCvv" name="cardCvv" placeholder="•••" maxlength="4" />
+                  </div>
+                </div>
+              </div>
+            </div> -->
+
+          <!-- UPI Field -->
+          <!-- <div class="card-fields" *ngIf="bookingData.paymentMethod === 'upi'">
+              <div class="bk-field">
+                <label>UPI ID</label>
+                <div class="bk-input-wrap">
+                  <input type="text" [(ngModel)]="bookingData.upiId" name="upiId" placeholder="yourname@upi" />
+                </div>
+              </div>
+            </div> -->
+
+          <div class="secure-note">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#97C459" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+            256-bit SSL encrypted · Your data is safe & secure
+          </div>
+          <!-- </div> -->
+
+          <!-- </div> -->
+        </div>
+
+      </div>
+
+      <!-- ── MODAL FOOTER ── -->
+      <div class="bk-footer">
+        <div class="bk-footer-price">
+          <span class="fp-label">Total</span>
+          <span class="fp-amount">{{ bookingData.grandTotal | currency:'INR':'symbol':'1.0-0' }}</span>
+          <span class="fp-nights">{{ bookingData.nights }} night{{ bookingData.nights !== 1 ? 's' : '' }}</span>
+        </div>
+        <div class="bk-footer-actions">
+          <button class="bk-btn-back" *ngIf="bookingStep > 1" (click)="prevStep()">← Back</button>
+          <button class="bk-btn-next" *ngIf="bookingStep < 3" (click)="nextStep()">
+            Continue →
+          </button>
+          <button class="bk-btn-pay" *ngIf="bookingStep === 3" (click)="confirmBooking()"
+            [disabled]="calculateTotal() <= 0">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+            Confirm & Pay {{ bookingData.grandTotal | currency:'INR':'symbol':'1.0-0' }}
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
