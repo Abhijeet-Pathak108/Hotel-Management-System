@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -52,6 +53,7 @@ public class SecurityConfig {
             
 
             .authorizeHttpRequests(auth -> auth
+            	.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers("/auth/login","/auth/logout", "/auth/refresh","/auth/register","/auth/home",
                 		"/password/forgot-password","/password/verify-otp",
                 		"/password/reset-password").permitAll()
@@ -79,32 +81,25 @@ public class SecurityConfig {
   	return new BCryptPasswordEncoder();
   }
   
-@Bean
-public CorsConfigurationSource corsConfigurationSource() {
-    CorsConfiguration config = new CorsConfiguration();
+  @Bean
+  public CorsConfigurationSource corsConfigurationSource() {
+      CorsConfiguration config = new CorsConfiguration();
 
-    config.setAllowedOrigins(List.of(
-    	    "http://localhost:4200",
-    	    "http://127.0.0.1:5500",
-    	    "http://20.3.9.238:5500",
-    	    "https://hotel-management-system-7gqa.onrender.com",
-    	    "https://*.vercel.app"
-    	));
+      config.setAllowedOriginPatterns(List.of(
+          "http://localhost:4200",
+          "https://*.vercel.app"
+      ));
 
+      config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+      config.setAllowedHeaders(List.of("*"));
+      config.setAllowCredentials(true);
+      config.setExposedHeaders(List.of("Authorization"));
 
-    config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-    config.setAllowedHeaders(List.of("*"));
-//    config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+      UrlBasedCorsConfigurationSource source =
+              new UrlBasedCorsConfigurationSource();
+      source.registerCorsConfiguration("/**", config);
 
-    config.setAllowCredentials(true);
-    
-    config.setExposedHeaders(List.of("Authorization"));
-
-    UrlBasedCorsConfigurationSource source =
-            new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", config);
-
-    return source;
-}
+      return source;
+  }
 }
 
