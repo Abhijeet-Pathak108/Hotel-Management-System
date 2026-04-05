@@ -87,7 +87,8 @@ public CorsConfigurationSource corsConfigurationSource() {
     	    "http://localhost:4200",
     	    "http://127.0.0.1:5500",
     	    "http://20.3.9.238:5500",
-    	    "https://hotel-management-system-gzh6b4xuv-abhijeet-pathak108s-projects.vercel.app"
+    	    "https://hotel-management-system-7gqa.onrender.com",
+    	    "https://*.vercel.app"
     	));
 
 
