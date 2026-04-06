@@ -43,7 +43,7 @@ public class ChangePasswordController {
 
 	    // 🔍 Check if user exists
 	    User user = userRepository.findByEmail(email);
-	    if (user == null) {
+	    if (user.getEmail() == null) {
 	        return ResponseEntity.badRequest().body("Email not registered");
 	    }
 
@@ -61,7 +61,7 @@ public class ChangePasswordController {
 	    try {
 	        emailService.sendOtpEmail(email, otp);
 	    } catch (Exception e) {
-	        System.out.println("Email failed: " + e.getMessage());
+	        return ResponseEntity.status(500).body(e.getMessage());
 	    }
 
 	    return ResponseEntity.ok("OTP sent to email");
