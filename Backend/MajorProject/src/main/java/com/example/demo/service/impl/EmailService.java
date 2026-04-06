@@ -3,6 +3,7 @@ package com.example.demo.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
@@ -20,6 +21,9 @@ public class EmailService {
 	
 	@Autowired
 	private JavaMailSender mailSender;
+	
+	@Value("$sender.email")
+	private String senderEmail;
 	
 	
 	
@@ -42,7 +46,8 @@ public class EmailService {
 	    if (booking.getUser() == null || booking.getUser().getEmail() == null) {
 	        throw new RuntimeException("User email not found!");
 	    }
-
+	    
+	    message.setFrom(senderEmail);
 	    message.setTo(booking.getUser().getEmail());
 	    message.setSubject("Booking Confirmed 🎉");
 
@@ -66,6 +71,7 @@ public class EmailService {
 	@Async
 	public void sendOtpEmail(String toEmail, String otp) {
 	    SimpleMailMessage message = new SimpleMailMessage();
+	    message.setFrom(senderEmail);
 	    message.setTo(toEmail);
 	    message.setSubject("Password Reset OTP");
 	    message.setText("Your OTP is: " + otp + "\nValid for 5 minutes.");
