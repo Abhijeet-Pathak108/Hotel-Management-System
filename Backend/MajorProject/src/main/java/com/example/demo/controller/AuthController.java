@@ -86,7 +86,7 @@ public class AuthController {
         try {
         	
         	User user = userRepo.findByEmail(request.getEmail());
-        	if(user!=null) {
+        	if(user.getEmail()!=null) {
         		  return ResponseEntity.badRequest().body(
         			        Map.of("status",400,"msg","User Already Registered!")
         			    );

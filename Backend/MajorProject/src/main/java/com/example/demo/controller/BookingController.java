@@ -42,7 +42,8 @@ public class BookingController {
 
 			return ResponseEntity.ok(resp);
 		} catch (Exception e) {
-			return ResponseEntity.status(500).body("something went wrong");
+			String resp = e.getMessage();
+			return ResponseEntity.status(500).body(resp);
 		}
 	}
 	

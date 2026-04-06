@@ -14,6 +14,7 @@ export interface AuthRequest {
 export class Api {
 
   private baseUrl = 'https://hotel-management-system-7gqa.onrender.com/';
+  // private baseUrl = 'http://localhost:8080/';
 
   constructor(private http: HttpClient) {}
 
