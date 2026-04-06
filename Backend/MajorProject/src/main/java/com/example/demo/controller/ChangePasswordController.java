@@ -17,13 +17,14 @@ import com.example.demo.entity.OtpEntity;
 import com.example.demo.entity.User;
 import com.example.demo.repository.OtpEntityRepository;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.service.impl.EmailService;
 
 @RestController
 @RequestMapping("/password")
 public class ChangePasswordController {
 	
 	@Autowired
-	private JavaMailSender mailSender;
+	private EmailService emailService;
 	
 	@Autowired
 	private UserRepository userRepository;
@@ -58,7 +59,7 @@ public class ChangePasswordController {
 
 	    // 📩 Send Email
 	    try {
-	        sendOtpEmail(email, otp);
+	        emailService.sendOtpEmail(email, otp);
 	    } catch (Exception e) {
 	        System.out.println("Email failed: " + e.getMessage());
 	    }
@@ -129,13 +130,6 @@ public class ChangePasswordController {
 	    return record.getOtp().equals(otp);
 	}
 	
-	public void sendOtpEmail(String toEmail, String otp) {
-	    SimpleMailMessage message = new SimpleMailMessage();
-	    message.setTo(toEmail);
-	    message.setSubject("Password Reset OTP");
-	    message.setText("Your OTP is: " + otp + "\nValid for 5 minutes.");
-	    
-	    mailSender.send(message);
-	}
+	
 
 }

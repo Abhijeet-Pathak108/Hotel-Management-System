@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.BookingRequest;
@@ -42,7 +43,7 @@ public class BookingServiceImpl implements BookingService {
 	private PaymentRepository paymentRepo;
 	
 	@Autowired
-	private JavaMailSender mailSender;
+	private EmailService emailService;
 
 	@Override
 	public void save(Booking booking) {
@@ -94,51 +95,19 @@ public class BookingServiceImpl implements BookingService {
 
 		}
 		
-		if(Boolean.TRUE.equals(request.getSendEmail())) {
-			sendConfirmationEmail(booking);
+		if (Boolean.TRUE.equals(request.getSendEmail())) {
+		    
+		        try {
+		            emailService.sendConfirmationEmail(booking);
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		        }
+		   
 		}
 
 		return request;
 	}
 	
-	public void sendConfirmationEmail(Booking booking) {
-
-	    List<GuestDetails> guests = guestDetailsRepo.findByBooking(booking);
-
-	    StringBuilder guestInfo = new StringBuilder();
-
-	    for (GuestDetails g : guests) {
-	        guestInfo.append("Name: ").append(g.getName())
-	                 .append(", Age: ").append(g.getAge())
-	                 .append(", Gender: ").append(g.getGender())
-	                 .append("\n");
-	    }
-
-	    SimpleMailMessage message = new SimpleMailMessage();
-	    
-	    if (booking.getUser() == null || booking.getUser().getEmail() == null) {
-	        throw new RuntimeException("User email not found!");
-	    }
-
-	    message.setTo(booking.getUser().getEmail());
-	    message.setSubject("Booking Confirmed 🎉");
-
-	    message.setText(
-	        "Hello " + booking.getUser().getUsername() + ",\n\n" +
-	        "Your booking is confirmed!\n\n" +
-
-	        "Booking ID: " + booking.getId() + "\n" +
-	        "Check-in: " + booking.getCheckIn() + "\n" +
-	        "Check-out: " + booking.getCheckOut() + "\n" +
-	        "Total: ₹" + booking.getGrandTotal() + "\n\n" +
-
-	        "Guests:\n" + guestInfo.toString() + "\n" +
-
-	        "Thank you for choosing us!"
-	    );
-
-	    mailSender.send(message);
-	}
 
 	@Override
 	public List<Map<String, Object>> getCompletedBooking(Integer id) {
